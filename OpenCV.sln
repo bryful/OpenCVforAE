@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCVSkelton", "OpenCVSkelton\Win\OpenCVSkelton.vcxproj", "{82675920-EFDC-4880-84E3-4D234C1A86BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82675920-EFDC-4880-84E3-4D234C1A86BC}.Debug|x64.ActiveCfg = Debug|x64
+		{82675920-EFDC-4880-84E3-4D234C1A86BC}.Debug|x64.Build.0 = Debug|x64
+		{82675920-EFDC-4880-84E3-4D234C1A86BC}.Release|x64.ActiveCfg = Release|x64
+		{82675920-EFDC-4880-84E3-4D234C1A86BC}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5ABFB0F9-97EC-46E8-B305-ED83175818F6}
+	EndGlobalSection
+EndGlobal
