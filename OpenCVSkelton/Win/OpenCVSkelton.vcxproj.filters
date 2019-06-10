@@ -17,9 +17,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\OpenCVSkelton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Headers\A.h">
       <Filter>Header Files\AE</Filter>
     </ClInclude>
@@ -89,12 +86,14 @@
     <ClInclude Include="..\..\..\Headers\AE_PluginData.h">
       <Filter>Header Files\AE</Filter>
     </ClInclude>
-    <ClInclude Include="..\OpenCVSkelton_Target.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Lib\CAE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Headers\AE_EffectVers.h">
+      <Filter>Header Files\AE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenCVSkelton.h" />
+    <ClInclude Include="..\OpenCVSkelton_Target.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenCVSkeltonPiPL.rc">
@@ -106,6 +105,18 @@
       <Filter>Supporting code</Filter>
     </ClCompile>
     <ClCompile Include="..\OpenCVSkelton.cpp" />
+    <ClCompile Include="..\..\..\Util\AEGP_SuiteHandler.cpp">
+      <Filter>Supporting code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Util\AEFX_SuiteHelper.c">
+      <Filter>Supporting code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Util\MissingSuiteError.cpp">
+      <Filter>Supporting code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Util\AEGP_Utils.cpp">
+      <Filter>Supporting code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\OpenCVSkeltonPiPL.r">

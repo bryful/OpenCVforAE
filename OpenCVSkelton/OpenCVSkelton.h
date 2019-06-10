@@ -22,38 +22,76 @@
 	#include <Windows.h>
 #endif
 
+//OpenCVのヘッダー
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 
 //定数定義ヘッダー
 #include "OpenCVSkelton_Target.h"
 
 //CAEクラスの読み込み
-#include "..\OpenCV\Lib\CAE.h"
+#include "..\Lib\CAE.h"
 
 
 enum {
 	ID_INPUT = 0,
-	NOISE_SLIDER,		// default input layer 
+
+	ID_STR_POS,
+	ID_STR_COLOR,
+	ID_STR_SIZE,
+
+
+	ID_TOPIC,
+	ID_ADD_SLIDER,
+	ID_FIXED_SLIDER,
+	ID_FLOAT_SLIDER,
+	ID_COLOR,
+	ID_CHECKBOX,
+	ID_ANGLE,
+	ID_POPUP,
+	ID_POINT,
+	ID_TOPIC_END,
+
 	ID_NUM_PARAMS
 };
 
-enum {
-	SLIDER_DISK_ID = 1
-};
 
 
-#define FILTER_NOISE_MIN	0
-#define FILTER_NOISE_MAX	1000
-#define FILTER_NOISE_DFLT	10
-#define SLIDER_MIN			0
-#define	SLIDER_MAX			100
+#define STR_STR_POS		"str_pos"
+#define STR_STR_COL		"str_color"
+#define STR_STR_SIZE	"str_size"
 
-#define RESTRICT_BOUNDS			0
-#define SLIDER_PRECISION		1
-#define DISPLAY_FLAGS			PF_ValueDisplayFlag_PERCENT
+#define STR_TOPIC			"topic"
+#define STR_ADD_SLIDER		"add_slider"
+#define STR_FIXED_SLIDER	"fiexd_slider"
+#define STR_FLOAT_SLIDER	"float_slider"
+#define STR_COLOR			"color"
+#define STR_CHECKBOX1		"checkbox"
+#define STR_CHECKBOX2		"on"
+#define STR_ANGLE			"angle"
+#define STR_POPUP			"popup"
+#define STR_POPUP_ITEMS		"item1|item2|item3"
+#define STR_POPUP_COUNT		3
+#define STR_POPUP_DFLT		2
+#define STR_POINT			"point"
 
 
 typedef struct ParamInfo {
-	PF_FpLong	valF;
+	PF_FixedPoint	str_point;
+	PF_Pixel		str_color;
+	PF_FpLong		str_size;
+
+
+	A_long			add;
+	PF_Fixed		fxd;
+	PF_FpLong		flt;
+	PF_Pixel		color;
+	PF_Boolean		checkbox;
+	PF_Fixed		angle;
+	A_long			popup;
+	PF_FixedPoint	point;
 } ParamInfo, *ParamInfoP, **ParamInfoH;
 
 

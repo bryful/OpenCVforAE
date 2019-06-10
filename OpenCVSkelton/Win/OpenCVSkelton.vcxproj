@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\outPlugins\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\Adobe\Adobe After Effects CS6\Support Files\Plug-ins\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\outPlugins\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
@@ -75,7 +75,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\Headers;..\..\..\Headers\SP;..\..\..\Resources;..\..\..\Util;C:¥opencv¥build¥include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\Headers;..\..\..\Headers\SP;..\..\..\Resources;..\..\..\Util;C:\opencv\build\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MSWindows;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
@@ -179,6 +179,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Headers\AEFX_SuiteHandlerTemplate.h" />
+    <ClInclude Include="..\..\..\Headers\AE_EffectVers.h" />
     <ClInclude Include="..\..\..\Headers\AE_PluginData.h" />
     <ClInclude Include="..\..\Lib\CAE.h" />
     <ClInclude Include="..\OpenCVSkelton.h" />
@@ -225,6 +226,10 @@ cl /D "MSWindows" /EP $(IntDir)%(Filename).rrc &gt;               "$(ProjectDir)
     <ResourceCompile Include="OpenCVSkeltonPiPL.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Util\AEFX_SuiteHelper.c" />
+    <ClCompile Include="..\..\..\Util\AEGP_SuiteHandler.cpp" />
+    <ClCompile Include="..\..\..\Util\AEGP_Utils.cpp" />
+    <ClCompile Include="..\..\..\Util\MissingSuiteError.cpp" />
     <ClCompile Include="..\..\..\Util\Smart_Utils.cpp" />
     <ClCompile Include="..\OpenCVSkelton.cpp" />
   </ItemGroup>

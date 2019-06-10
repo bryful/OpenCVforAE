@@ -324,6 +324,7 @@ public:
 			ERR(suitesP->UtilitySuite5()->AEGP_ExecuteScript(ae_plugin_idP->my_id, scriptCode, TRUE, NULL, NULL));
 		}
 		*/
+
 		PF_SPRINTF(	out_data->return_msg, 
 			"%s, v%d.%d\r%s",
 			NAME, 
@@ -347,11 +348,7 @@ public:
 		CAE::suitesP	= new AEGP_SuiteHandler(in_data->pica_basicP);
 
 		//***_Target.h‚Å’è‹`
-		out_data->my_version	= PF_VERSION(MAJOR_VERSION,
-			MINOR_VERSION,
-			BUG_VERSION,
-			STAGE_VERSION,
-			BUILD_VERSION);
+		out_data->my_version	=	VERSION;
 		out_data->out_flags		=	AE_OUT_FLAGS;
 		out_data->out_flags2	=	AE_OUT_FLAGS2;
 
