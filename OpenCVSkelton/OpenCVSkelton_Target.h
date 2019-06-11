@@ -20,6 +20,8 @@
 #define CATEGORY		"OpenCV"
 
 
+#define SUPPORT_SMARTFX			//‚±‚ê‚ð—LŒø‚É‚·‚é‚ÆSmartFX+Float_Color‚É‘Î‰ž‚·‚é
+
 #define	MAJOR_VERSION	1
 #define	MINOR_VERSION	0
 #define	BUG_VERSION		0
@@ -37,9 +39,13 @@
 #define AE_OUT_FLAGS	33554496
 #define AE_OUT_FLAGS2	8
 
-
-
-
+/*
+#if defined(SUPPORT_SMARTFX)
+#define FS_OUT_FLAGS2	5193
+#else
+#define FS_OUT_FLAGS2	73
+#endif
+*/
 
 #endif // OpenCVSkelton_Target_H
 

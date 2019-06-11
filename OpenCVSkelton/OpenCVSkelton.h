@@ -33,6 +33,8 @@
 
 //CAEƒNƒ‰ƒX‚Ì“Ç‚İ‚İ
 #include "..\Lib\CAE.h"
+#include "..\Lib\CAEcv.h"
+#include "..\Lib\FsUtils.h"
 
 
 enum {

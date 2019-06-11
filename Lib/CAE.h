@@ -25,6 +25,7 @@
 #define refconType void*
 #endif
 
+#include "FsUtils.h"
 
 //******************************************************************************
 
@@ -1359,17 +1360,11 @@ public:
 	//--------------------------------------------------------------------
 	PF_Err premultiply(A_long mode)
 	{
-#if defined(PF_AE100_PLUG_IN_VERSION)
 	return suitesP->FillMatteSuite2()->premultiply(
 			in_data->effect_ref,
 			mode,
 			output);
-#else
-	return suitesP->FillMatteSuite1()->premultiply(
-			in_data->effect_ref,
-			mode,
-			output);
-#endif
+
 	}
 	//--------------------------------------------------------------------
 };

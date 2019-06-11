@@ -94,6 +94,13 @@
     </ClInclude>
     <ClInclude Include="..\OpenCVSkelton.h" />
     <ClInclude Include="..\OpenCVSkelton_Target.h" />
+    <ClInclude Include="..\OpenCVSkelton_Entry.h" />
+    <ClInclude Include="..\..\Lib\CAEcv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Lib\FsUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenCVSkeltonPiPL.rc">

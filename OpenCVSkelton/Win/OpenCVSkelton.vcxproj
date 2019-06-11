@@ -75,7 +75,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\Headers;..\..\..\Headers\SP;..\..\..\Resources;..\..\..\Util;C:\opencv\build\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\Headers;..\..\..\Headers\SP;..\..\..\Resources;..\..\..\Util;..\..\Lib;C:\opencv\build\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MSWindows;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
@@ -130,7 +130,7 @@
     </Midl>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\Headers;..\..\..\Headers\SP;..\..\..\Resources;..\..\..\Util</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\Headers;..\..\..\Headers\SP;..\..\..\Resources;..\..\..\Util;..\..\Lib</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MSWindows;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
@@ -182,6 +182,8 @@
     <ClInclude Include="..\..\..\Headers\AE_EffectVers.h" />
     <ClInclude Include="..\..\..\Headers\AE_PluginData.h" />
     <ClInclude Include="..\..\Lib\CAE.h" />
+    <ClInclude Include="..\..\Lib\CAEcv.h" />
+    <ClInclude Include="..\..\Lib\FsUtils.h" />
     <ClInclude Include="..\OpenCVSkelton.h" />
     <ClInclude Include="..\..\..\Headers\A.h" />
     <ClInclude Include="..\..\..\Headers\AE_Effect.h" />
@@ -204,6 +206,7 @@
     <ClInclude Include="..\..\..\Headers\PrSDKAESupport.h" />
     <ClInclude Include="..\..\..\Headers\PrSDKAEUI.h" />
     <ClInclude Include="..\..\..\Headers\PrSDKPixelFormat.h" />
+    <ClInclude Include="..\OpenCVSkelton_Entry.h" />
     <ClInclude Include="..\OpenCVSkelton_Target.h" />
   </ItemGroup>
   <ItemGroup>
