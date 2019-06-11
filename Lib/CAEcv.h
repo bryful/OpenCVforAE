@@ -378,6 +378,68 @@ public:
 		ret.alpha = (PF_FpShort)s[3];
 		return ret;
 	}
+	//*********************************************************************************
+	PF_Err iterate8( refconType refcon, cv::Mat src, cv::Mat dst,
+		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, A_u_char *in, A_u_char *out)
+	)
+	{
+		if ((src.cols != dst.cols) || (src.rows != dst.rows)) return PF_Err_INVALID_INDEX;
+		A_long w = src.cols;
+		A_long h = src.rows;
+
+		A_u_char* inD = (A_u_char*)src.data;
+		A_u_char* outD = (A_u_char*)dst.data;
+		for (A_long y = 0; y < h; y++) {
+			for (A_long x = 0; x < w; x++) {
+				err = pix_fn((refconType)refcon, x, y, inD, outD);
+				if (err != PF_Err_NONE) return err;
+				inD+=4;
+				outD+=4;
+			}
+		}
+	}
+	//*********************************************************************************
+	PF_Err iterate16(refconType refcon, cv::Mat src, cv::Mat dst,
+		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, A_u_short *in, A_u_short *out)
+	)
+	{
+		if ((src.cols != dst.cols) || (src.rows != dst.rows)) return PF_Err_INVALID_INDEX;
+		A_long w = src.cols;
+		A_long h = src.rows;
+
+		A_u_short* inD = (A_u_short*)src.data;
+		A_u_short* outD = (A_u_short*)dst.data;
+		for (A_long y = 0; y < h; y++) {
+			for (A_long x = 0; x < w; x++) {
+				err = pix_fn((refconType)refcon, x, y, inD, outD);
+				if (err != PF_Err_NONE) return err;
+				inD += 4;
+				outD += 4;
+			}
+		}
+	}
+	//*********************************************************************************
+	PF_Err iterate32(refconType refcon, cv::Mat src, cv::Mat dst,
+		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, PF_FpShort *in, PF_FpShort *out)
+	)
+	{
+		PF_Err err;
+		if ((src.cols != dst.cols) || (src.rows != dst.rows)) return PF_Err_INVALID_INDEX;
+		A_long w = src.cols;
+		A_long h = src.rows;
+
+		PF_FpShort* inD = (PF_FpShort*)src.data;
+		PF_FpShort* outD = (PF_FpShort*)dst.data;
+		for (A_long y = 0; y < h; y++) {
+			for (A_long x = 0; x < w; x++) {
+				err = pix_fn((refconType)refcon, x, y, inD, outD);
+				if (err != PF_Err_NONE) return err;
+				inD += 4;
+				outD += 4;
+			}
+		}
+		return err;
+	}
 };
 
 

@@ -44,6 +44,9 @@ enum {
 	ID_STR_COLOR,
 	ID_STR_SIZE,
 
+	ID_R,
+	ID_G,
+	ID_B,
 
 	ID_TOPIC,
 	ID_ADD_SLIDER,
@@ -65,6 +68,10 @@ enum {
 #define STR_STR_COL		"str_color"
 #define STR_STR_SIZE	"str_size"
 
+#define STR_R			"red"
+#define STR_G			"green"
+#define STR_B			"green"
+
 #define STR_TOPIC			"topic"
 #define STR_ADD_SLIDER		"add_slider"
 #define STR_FIXED_SLIDER	"fiexd_slider"
@@ -85,6 +92,7 @@ typedef struct ParamInfo {
 	PF_Pixel		str_color;
 	PF_FpLong		str_size;
 
+	PF_FpLong		bgr[3];
 
 	A_long			add;
 	PF_Fixed		fxd;

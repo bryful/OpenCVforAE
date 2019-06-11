@@ -53,6 +53,49 @@ ParamsSetup(
 		0,							//WANT_PHASE
 		ID_STR_SIZE
 	);
+
+	//----------------------------------------------------------------
+	AEFX_CLR_STRUCT(def);
+	PF_ADD_FLOAT_SLIDER(STR_R,	//Name
+		-100,							//VALID_MIN
+		100,						//VALID_MAX
+		-100,							//SLIDER_MIN
+		100,						//SLIDER_MAX
+		1,							//CURVE_TOLERANCE
+		0,							//DFLT
+		1,							//PREC
+		0,							//DISP
+		0,							//WANT_PHASE
+		ID_R
+	);
+	//----------------------------------------------------------------
+	AEFX_CLR_STRUCT(def);
+	PF_ADD_FLOAT_SLIDER(STR_G,	//Name
+		-100,							//VALID_MIN
+		100,						//VALID_MAX
+		-100,							//SLIDER_MIN
+		100,						//SLIDER_MAX
+		1,							//CURVE_TOLERANCE
+		0,							//DFLT
+		1,							//PREC
+		0,							//DISP
+		0,							//WANT_PHASE
+		ID_G
+	);
+	//----------------------------------------------------------------
+	AEFX_CLR_STRUCT(def);
+	PF_ADD_FLOAT_SLIDER(STR_B,	//Name
+		-100,							//VALID_MIN
+		100,						//VALID_MAX
+		-100,							//SLIDER_MIN
+		100,						//SLIDER_MAX
+		1,							//CURVE_TOLERANCE
+		0,							//DFLT
+		1,							//PREC
+		0,							//DISP
+		0,							//WANT_PHASE
+		ID_B
+	);
 	//----------------------------------------------------------------
 	AEFX_CLR_STRUCT(def);
 	//def.flags = PF_ParamFlag_START_COLLAPSED;
@@ -96,73 +139,73 @@ ParamsSetup(
 		0,							//WANT_PHASE
 		ID_FLOAT_SLIDER
 	);
-	//----------------------------------------------------------------
-	//色の指定
-	AEFX_CLR_STRUCT(def);
-	//def.flags = PF_ParamFlag_CANNOT_TIME_VARY;//これをつけるとキーフレームが撃てなくなる
-	PF_ADD_COLOR(STR_COLOR,
-		0xFF,
-		0xFF,
-		0xFF,
-		ID_COLOR
-	);
-	//----------------------------------------------------------------
-	AEFX_CLR_STRUCT(def);
-	//def.flags = PF_ParamFlag_SUPERVISE |
-	//	PF_ParamFlag_CANNOT_TIME_VARY |
-	//	PF_ParamFlag_CANNOT_INTERP;
-	PF_ADD_CHECKBOX(STR_CHECKBOX1,
-		STR_CHECKBOX2,
-		TRUE,
-		0,
-		ID_CHECKBOX
-	);
-	//----------------------------------------------------------------
-	//角度
-	AEFX_CLR_STRUCT(def);
-	PF_ADD_ANGLE(STR_ANGLE, 0, ID_ANGLE);
-	//----------------------------------------------------------------
-	//ポップアップメニュー
-	AEFX_CLR_STRUCT(def);
-	PF_ADD_POPUP(STR_POPUP,
-		STR_POPUP_COUNT,	//メニューの数
-		STR_POPUP_DFLT,	//デフォルト
-		STR_POPUP_ITEMS,
-		ID_POPUP
-	);
-	//----------------------------------------------------------------
-	//位置の指定
-	AEFX_CLR_STRUCT(def);
-	PF_ADD_POINT(STR_POINT,			/*"New Center"*/
-		50,	// X
-		50,	// Y
-		0,	// Flag
-		ID_POINT
-	);
-	//----------------------------------------------------------------
-	AEFX_CLR_STRUCT(def);
-	PF_END_TOPIC(ID_TOPIC_END);
-	
-	out_data->num_params = ID_NUM_PARAMS;
+//----------------------------------------------------------------
+//色の指定
+AEFX_CLR_STRUCT(def);
+//def.flags = PF_ParamFlag_CANNOT_TIME_VARY;//これをつけるとキーフレームが撃てなくなる
+PF_ADD_COLOR(STR_COLOR,
+	0xFF,
+	0xFF,
+	0xFF,
+	ID_COLOR
+);
+//----------------------------------------------------------------
+AEFX_CLR_STRUCT(def);
+//def.flags = PF_ParamFlag_SUPERVISE |
+//	PF_ParamFlag_CANNOT_TIME_VARY |
+//	PF_ParamFlag_CANNOT_INTERP;
+PF_ADD_CHECKBOX(STR_CHECKBOX1,
+	STR_CHECKBOX2,
+	TRUE,
+	0,
+	ID_CHECKBOX
+);
+//----------------------------------------------------------------
+//角度
+AEFX_CLR_STRUCT(def);
+PF_ADD_ANGLE(STR_ANGLE, 0, ID_ANGLE);
+//----------------------------------------------------------------
+//ポップアップメニュー
+AEFX_CLR_STRUCT(def);
+PF_ADD_POPUP(STR_POPUP,
+	STR_POPUP_COUNT,	//メニューの数
+	STR_POPUP_DFLT,	//デフォルト
+	STR_POPUP_ITEMS,
+	ID_POPUP
+);
+//----------------------------------------------------------------
+//位置の指定
+AEFX_CLR_STRUCT(def);
+PF_ADD_POINT(STR_POINT,			/*"New Center"*/
+	50,	// X
+	50,	// Y
+	0,	// Flag
+	ID_POINT
+);
+//----------------------------------------------------------------
+AEFX_CLR_STRUCT(def);
+PF_END_TOPIC(ID_TOPIC_END);
 
-	return err;
+out_data->num_params = ID_NUM_PARAMS;
+
+return err;
 }
 
 //=======================================================================================
 /*
 static PF_Err
 FilterImage8 (
-	void		*refcon, 
-	A_long		xL, 
-	A_long		yL, 
-	PF_Pixel8	*inP, 
+	void		*refcon,
+	A_long		xL,
+	A_long		yL,
+	PF_Pixel8	*inP,
 	PF_Pixel8	*outP)
 {
 	PF_Err			err = PF_Err_NONE;
-	
+
 	NoiseInfo *	niP		= reinterpret_cast<NoiseInfo*>(refcon);
 	PF_FpLong	tempF		= 0;
-					
+
 	if (niP){
 		tempF 	= rand() % PF_MAX_CHAN8;
 		tempF	*= (niP->valF / SLIDER_MAX);
@@ -175,7 +218,39 @@ FilterImage8 (
 	return err;
 }
 */
+//-------------------------------------------------------------------------------------------------
+static PF_Err
+PixelFunc8(
+	void		*refcon,
+	A_long		xL,
+	A_long		yL,
+	A_u_char	*inP,
+	A_u_char	*outP)
+{
+	PF_Err			err = PF_Err_NONE;
 
+	ParamInfo *	infoP = reinterpret_cast<ParamInfo*>(refcon);
+
+
+
+	if (infoP->blue == 0)
+	{
+		outP[0] = inP[0];
+	}
+	else if (infoP->blue < 0)
+	{
+		outP[0] = RoundByteFpLong((double)inP[0] * (infoP->blue*-1));
+	}
+	else if (infoP->blue > 0)
+	{
+		outP[0] = RoundByteFpLong(inP[0] + (PF_MAX_CHAN8- inP[0])*(infoP->blue*-1));
+	}
+
+
+
+
+	return err;
+}
 //-------------------------------------------------------------------------------------------------
 PF_Err Test8(CAE *ae, ParamInfo *infoP)
 {
@@ -235,6 +310,14 @@ static PF_Err GetParams(CAE *ae, ParamInfo *infoP)
 	ERR(ae->GetFIXEDPOINT(ID_STR_POS, &infoP->str_point));
 	ERR(ae->GetCOLOR(ID_STR_COLOR, &infoP->str_color));
 	ERR(ae->GetFLOAT(ID_STR_SIZE, &infoP->str_size));
+
+	PF_FpLong d;
+	ERR(ae->GetFLOAT(ID_B, &d));
+	infoP->bgr[0] = d/100;
+	ERR(ae->GetFLOAT(ID_G, &d));
+	infoP->bgr[1] = d/100;
+	ERR(ae->GetFLOAT(ID_R, &d));
+	infoP->bgr[1] = d/100;
 
 	ERR(ae->GetADD(ID_ADD_SLIDER, &infoP->add));
 	ERR(ae->GetFIXED(ID_FIXED_SLIDER, &infoP->fxd));
