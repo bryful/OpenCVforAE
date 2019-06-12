@@ -27,11 +27,7 @@
 
 #include "FsUtils.h"
 
-#define FLOAT_PAR(x) do{\
-					x/=100;\
-					if(x<-100) x=100;\
-					else if(x>100) x=100;
-					}while(0)
+#define FLOAT_PAR(x) do{x/=100;if(x<-1) x=1;else if(x>1) x=1;}while(0)
 
 
 //******************************************************************************

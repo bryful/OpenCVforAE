@@ -233,20 +233,131 @@ PixelFunc8(
 
 
 
-	if (infoP->blue == 0)
+	//blue grren redÇÃèá
+	for (int i = 0; i < 3; i++)
 	{
-		outP[0] = inP[0];
+		if (infoP->bgr[i] == 0)
+		{
+			outP[i] = inP[i];
+		}
+		else if (infoP->bgr[i] < 0)
+		{
+			outP[i] = RoundByteFpLong((double)inP[i] + ((double)inP[i] * infoP->bgr[i]));
+		}
+		else if (infoP->bgr[i] > 0)
+		{
+			outP[i] = RoundByteFpLong(inP[i] + (PF_MAX_CHAN8 - inP[i])*(infoP->bgr[i] ));
+		}
 	}
-	else if (infoP->blue < 0)
-	{
-		outP[0] = RoundByteFpLong((double)inP[0] * (infoP->blue*-1));
-	}
-	else if (infoP->blue > 0)
-	{
-		outP[0] = RoundByteFpLong(inP[0] + (PF_MAX_CHAN8- inP[0])*(infoP->blue*-1));
-	}
+	return err;
+}
+//-------------------------------------------------------------------------------------------------
+static PF_Err
+PixelFunc16(
+	void		*refcon,
+	A_long		xL,
+	A_long		yL,
+	A_u_short	*inP,
+	A_u_short	*outP)
+{
+	PF_Err			err = PF_Err_NONE;
+
+	ParamInfo *	infoP = reinterpret_cast<ParamInfo*>(refcon);
 
 
+
+	//blue grren redÇÃèá
+	for (int i = 0; i < 3; i++)
+	{
+		if (infoP->bgr[i] == 0)
+		{
+			outP[i] = inP[i];
+		}
+		else if (infoP->bgr[i] < 0)
+		{
+			outP[i] = RoundShortFpLong((double)inP[i] + ((double)inP[i] * infoP->bgr[i]));
+		}
+		else if (infoP->bgr[i] > 0)
+		{
+			outP[i] = RoundShortFpLong(inP[i] + (PF_MAX_CHAN16 - inP[i])*(infoP->bgr[i]));
+		}
+	}
+	return err;
+}
+//-------------------------------------------------------------------------------------------------
+static PF_Err
+PixelFunc32(
+	void		*refcon,
+	A_long		xL,
+	A_long		yL,
+	PF_FpShort	*inP,
+	PF_FpShort	*outP)
+{
+	PF_Err			err = PF_Err_NONE;
+
+	ParamInfo *	infoP = reinterpret_cast<ParamInfo*>(refcon);
+
+
+
+	//blue grren redÇÃèá
+	for (int i = 0; i < 3; i++)
+	{
+		if (infoP->bgr[i] == 0)
+		{
+			outP[i] = inP[i];
+		}
+		else if (infoP->bgr[i] < 0)
+		{
+			outP[i] = RoundFpShortDouble((double)inP[i] + ((double)inP[i] * infoP->bgr[i]));
+		}
+		else if (infoP->bgr[i] > 0)
+		{
+			double v = inP[i];
+			if (v > 1) v = 1;
+			outP[i] = RoundFpShortDouble(inP[i] + (1 - v)*(infoP->bgr[i]));
+		}
+	}
+	return err;
+}
+//-------------------------------------------------------------------------------------------------
+PF_Err TestPixelFunc8(CAE *ae, ParamInfo *infoP)
+{
+	PF_Err			err = PF_Err_NONE;
+
+	cv::Mat src = CAEcv::WorldToMat8(ae->output);
+
+
+	ERR(CAEcv::iterate8((refconType)infoP,src,src, PixelFunc8));
+
+	CAEcv::Mat2World8(src, ae->output);
+
+
+	return err;
+}
+//-------------------------------------------------------------------------------------------------
+PF_Err TestPixelFunc16(CAE *ae, ParamInfo *infoP)
+{
+	PF_Err			err = PF_Err_NONE;
+
+	cv::Mat src = CAEcv::WorldToMat16(ae->output);
+
+	ERR(CAEcv::iterate16((refconType)infoP, src, src, PixelFunc16));
+
+	CAEcv::Mat2World16(src, ae->output);
+
+
+	return err;
+}
+//-------------------------------------------------------------------------------------------------
+PF_Err TestPixelFunc32(CAE *ae, ParamInfo *infoP)
+{
+	PF_Err			err = PF_Err_NONE;
+
+	cv::Mat src = CAEcv::WorldToMat32(ae->output);
+
+	ERR(CAEcv::iterate32((refconType)infoP, src, src, PixelFunc32));
+
+	CAEcv::Mat2World32(src, ae->output);
 
 
 	return err;
@@ -317,7 +428,7 @@ static PF_Err GetParams(CAE *ae, ParamInfo *infoP)
 	ERR(ae->GetFLOAT(ID_G, &d));
 	infoP->bgr[1] = d/100;
 	ERR(ae->GetFLOAT(ID_R, &d));
-	infoP->bgr[1] = d/100;
+	infoP->bgr[2] = d/100;
 
 	ERR(ae->GetADD(ID_ADD_SLIDER, &infoP->add));
 	ERR(ae->GetFIXED(ID_FIXED_SLIDER, &infoP->fxd));
@@ -343,14 +454,16 @@ Exec(CAE *ae, ParamInfo *infoP)
 	case PF_PixelFormat_ARGB128:
 		//ERR(ae->iterate32((refconType)infoP,FilterImage32));
 		ERR(Test32(ae, infoP));
+		TestPixelFunc32(ae, infoP);
 		break;
 	case PF_PixelFormat_ARGB64:
 		//ERR(ae->iterate16((refconType)infoP,FilterImage16));
 		ERR(Test16(ae, infoP));
+		TestPixelFunc16(ae, infoP);
 		break;
 	case PF_PixelFormat_ARGB32:
-		//ERR(ae->iterate8((refconType)infoP,FilterImage8));
 		ERR(Test8(ae, infoP));
+		TestPixelFunc8(ae, infoP);
 		break;
 	}
 	return err;

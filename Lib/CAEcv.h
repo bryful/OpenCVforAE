@@ -379,10 +379,11 @@ public:
 		return ret;
 	}
 	//*********************************************************************************
-	PF_Err iterate8( refconType refcon, cv::Mat src, cv::Mat dst,
+	static PF_Err iterate8( refconType refcon, cv::Mat src, cv::Mat dst,
 		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, A_u_char *in, A_u_char *out)
 	)
 	{
+		PF_Err err = PF_Err_NONE;
 		if ((src.cols != dst.cols) || (src.rows != dst.rows)) return PF_Err_INVALID_INDEX;
 		A_long w = src.cols;
 		A_long h = src.rows;
@@ -397,12 +398,14 @@ public:
 				outD+=4;
 			}
 		}
+		return err;
 	}
 	//*********************************************************************************
-	PF_Err iterate16(refconType refcon, cv::Mat src, cv::Mat dst,
+	static PF_Err iterate16(refconType refcon, cv::Mat src, cv::Mat dst,
 		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, A_u_short *in, A_u_short *out)
 	)
 	{
+		PF_Err err = PF_Err_NONE;
 		if ((src.cols != dst.cols) || (src.rows != dst.rows)) return PF_Err_INVALID_INDEX;
 		A_long w = src.cols;
 		A_long h = src.rows;
@@ -417,9 +420,10 @@ public:
 				outD += 4;
 			}
 		}
+		return err;
 	}
 	//*********************************************************************************
-	PF_Err iterate32(refconType refcon, cv::Mat src, cv::Mat dst,
+	static PF_Err iterate32(refconType refcon, cv::Mat src, cv::Mat dst,
 		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, PF_FpShort *in, PF_FpShort *out)
 	)
 	{
