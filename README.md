@@ -44,6 +44,9 @@ adobe after effectsのエフェクトプラグインでオープンソースの�
         CPP_ProjectRename.exe     // C++のソース内の文字を置換するアプリ
                                   // OpenCVSkeltoをリネームするときに使う
 ```
+utilsに入っているアプリは、バージョン及びout_flagsの定数はsdkではマクロで実装していますが、
+PiPLリソースのコンパイルの都合で記述がマクロで処理できなく結局自前で計算する必要があるので作ったものです。  
+計算するならマクロ展開やめて一か所書き換えればいいようにしています。
 
 ## Usage
 OpenCVv3.4.6をインストールしてください。  
@@ -91,6 +94,8 @@ $(LibraryPath);**C:¥opencv¥build¥x64¥vc15¥lib**
 %(AdditionalDependencies);**opencv_world346.lib** //リリース時
 
 結構はまります。絶対あってるのに**opencv_world346.lib**や**opencv_world346.lib**がないとエラーが出たら、visual studioを再起動させるか、いったん設定から外して再度登録すると何故かうまくいく時があります。
+  
+新しいプラグインを作るときは、OpenCVSkeltonをvisual studioのテンプレートに登録するか、utilsフォルダにある**CPP_ProjectRename.exe**を使ってリネームします。  
 
 # License
 This software is released under the MIT License, see LICENSE.txt. 
