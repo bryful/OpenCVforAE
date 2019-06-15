@@ -80,9 +80,9 @@ oepncv自体のインストールは特に問題ないと思います。大変�
 重要なのはプロジェクトのプロパティでincludeするヘッダーやライブラリの設定です。  
 プロジェクトのプロパティで注意するところは以下の点  
  * 構成プロパティ/VC++プロパティ/VC++ディレクトリ/インクルードディレクトリ  
-$(VC_IncludePath);$(WindowsSDK_IncludePath);**C:¥opencv¥build¥include**
+$(VC_IncludePath);$(WindowsSDK_IncludePath);**C:\opencv\build\include**
  * 構成プロパティ/VC++プロパティ/VC++ディレクトリ/ライブラリディレクトリ  
-$(LibraryPath);**C:¥opencv¥build¥x64¥vc15¥lib**
+$(LibraryPath);**C:\opencv\build\x64\vc15\lib**
  * C/C++/全般/追加のインクルードディレクトリ 
 ..\..\..\Headers;..\..\..\Headers\SP;..\..\..\Resources;..\..\..\Util;..\..\Lib;**C:\opencv\build\include**
  * C/C++/コード生成/構造体メンバーのアライメント  
@@ -103,7 +103,7 @@ This software is released under the MIT License, see LICENSE.txt.
 
 ## Authors
 
-bry-ful(Hiroshi Furuhashi) [http://bryful.yuzu.bz](http://bryful.yuzu.bz)
+bry-ful(Hiroshi Furuhashi) [http://bryful.yuzu.bz](http://bryful.yuzu.bz)  
 twitter:[bryful](https://twitter.com/bryful)  
 bryful@gmail.com  
 

@@ -224,13 +224,18 @@ PixelFunc8(
 	void		*refcon,
 	A_long		xL,
 	A_long		yL,
-	A_u_char	*inP,
-	A_u_char	*outP)
+	CV8UC4_Pixel	*inP,
+	CV8UC4_Pixel	*outP)
 {
 	PF_Err			err = PF_Err_NONE;
 
 	ParamInfo *	infoP = reinterpret_cast<ParamInfo*>(refcon);
 
+
+	A_u_char *inP2;
+	inP2 = (A_u_char *)inP;
+	A_u_char *outP2;
+	outP2 = (A_u_char *)inP;
 
 
 	//blue grren redÇÃèá
@@ -238,15 +243,15 @@ PixelFunc8(
 	{
 		if (infoP->bgr[i] == 0)
 		{
-			outP[i] = inP[i];
+			outP2[i] = inP2[i];
 		}
 		else if (infoP->bgr[i] < 0)
 		{
-			outP[i] = RoundByteFpLong((double)inP[i] + ((double)inP[i] * infoP->bgr[i]));
+			outP2[i] = RoundByteFpLong((double)inP2[i] + ((double)inP2[i] * infoP->bgr[i]));
 		}
 		else if (infoP->bgr[i] > 0)
 		{
-			outP[i] = RoundByteFpLong(inP[i] + (PF_MAX_CHAN8 - inP[i])*(infoP->bgr[i] ));
+			outP2[i] = RoundByteFpLong(inP2[i] + (PF_MAX_CHAN8 - inP2[i])*(infoP->bgr[i] ));
 		}
 	}
 	return err;
@@ -257,29 +262,32 @@ PixelFunc16(
 	void		*refcon,
 	A_long		xL,
 	A_long		yL,
-	A_u_short	*inP,
-	A_u_short	*outP)
+	CV16UC4_Pixel	*inP,
+	CV16UC4_Pixel	*outP)
 {
 	PF_Err			err = PF_Err_NONE;
 
 	ParamInfo *	infoP = reinterpret_cast<ParamInfo*>(refcon);
 
-
+	A_u_short *inP2;
+	inP2 = (A_u_short *)inP;
+	A_u_short *outP2;
+	outP2 = (A_u_short *)inP;
 
 	//blue grren redÇÃèá
 	for (int i = 0; i < 3; i++)
 	{
 		if (infoP->bgr[i] == 0)
 		{
-			outP[i] = inP[i];
+			outP2[i] = inP2[i];
 		}
 		else if (infoP->bgr[i] < 0)
 		{
-			outP[i] = RoundShortFpLong((double)inP[i] + ((double)inP[i] * infoP->bgr[i]));
+			outP2[i] = RoundShortFpLong((double)inP2[i] + ((double)inP2[i] * infoP->bgr[i]));
 		}
 		else if (infoP->bgr[i] > 0)
 		{
-			outP[i] = RoundShortFpLong(inP[i] + (PF_MAX_CHAN16 - inP[i])*(infoP->bgr[i]));
+			outP2[i] = RoundShortFpLong(inP2[i] + (PF_MAX_CHAN16 - inP2[i])*(infoP->bgr[i]));
 		}
 	}
 	return err;
@@ -290,13 +298,17 @@ PixelFunc32(
 	void		*refcon,
 	A_long		xL,
 	A_long		yL,
-	PF_FpShort	*inP,
-	PF_FpShort	*outP)
+	CV32UC4_Pixel	*inP,
+	CV32UC4_Pixel	*outP)
 {
 	PF_Err			err = PF_Err_NONE;
 
 	ParamInfo *	infoP = reinterpret_cast<ParamInfo*>(refcon);
 
+	PF_FpShort *inP2;
+	inP2 = (PF_FpShort *)inP;
+	PF_FpShort *outP2;
+	outP2 = (PF_FpShort *)inP;
 
 
 	//blue grren redÇÃèá
@@ -304,17 +316,17 @@ PixelFunc32(
 	{
 		if (infoP->bgr[i] == 0)
 		{
-			outP[i] = inP[i];
+			outP2[i] = inP2[i];
 		}
 		else if (infoP->bgr[i] < 0)
 		{
-			outP[i] = RoundFpShortDouble((double)inP[i] + ((double)inP[i] * infoP->bgr[i]));
+			outP2[i] = RoundFpShortDouble((double)inP2[i] + ((double)inP2[i] * infoP->bgr[i]));
 		}
 		else if (infoP->bgr[i] > 0)
 		{
-			double v = inP[i];
+			double v = inP2[i];
 			if (v > 1) v = 1;
-			outP[i] = RoundFpShortDouble(inP[i] + (1 - v)*(infoP->bgr[i]));
+			outP2[i] = RoundFpShortDouble(inP2[i] + (1 - v)*(infoP->bgr[i]));
 		}
 	}
 	return err;

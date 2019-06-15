@@ -35,12 +35,35 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 
+enum
+{
+	BLUE = 0,
+	GREEN,
+	RED,
+	ALPHA,
+	CHANNELS
+
+};
+typedef struct {
+	A_u_char	blue,  green, red, alpha;
+} CV8UC4_Pixel;
+
+typedef struct {
+	A_u_short	blue, green, red, alpha;
+} CV16UC4_Pixel;
+
+typedef struct {
+	PF_FpShort	blue, green, red, alpha;
+} CV32UC4_Pixel;
 
 
 class CAEcv
 {
 private:
+
 public:
+	
+
 	CAEcv()
 	{
 
@@ -64,6 +87,7 @@ public:
 			return WorldToMat16(world);
 			break;
 		case PF_PixelFormat_ARGB32:
+		default:
 			return WorldToMat8(world);
 			break;
 		}
@@ -110,10 +134,10 @@ public:
 			{
 				A_long matPosx = matPos + x * cz;
 				A_long wldPosx = wldPos + x;
-				mData[matPosx + 0] = wData[wldPosx].blue;
-				mData[matPosx + 1] = wData[wldPosx].green;
-				mData[matPosx + 2] = wData[wldPosx].red;
-				mData[matPosx + 3] = wData[wldPosx].alpha;
+				mData[matPosx + BLUE] = wData[wldPosx].blue;
+				mData[matPosx + GREEN] = wData[wldPosx].green;
+				mData[matPosx + RED] = wData[wldPosx].red;
+				mData[matPosx + ALPHA] = wData[wldPosx].alpha;
 
 			}
 			matPos += czw;
@@ -145,10 +169,10 @@ public:
 			{
 				A_long matPosx = matPos + x * cz;
 				A_long wldPosx = wldPos + x;
-				mData[matPosx + 0] = wData[wldPosx].blue;
-				mData[matPosx + 1] = wData[wldPosx].green;
-				mData[matPosx + 2] = wData[wldPosx].red;
-				mData[matPosx + 3] = wData[wldPosx].alpha;
+				mData[matPosx + BLUE] = wData[wldPosx].blue;
+				mData[matPosx + GREEN] = wData[wldPosx].green;
+				mData[matPosx + RED] = wData[wldPosx].red;
+				mData[matPosx + ALPHA] = wData[wldPosx].alpha;
 
 			}
 			matPos += czw;
@@ -167,8 +191,8 @@ public:
 
 		cv::Mat ret(cv::Size((int)world->width, (int)world->height), CV_32FC4);
 
-		A_u_short* mData = (A_u_short*)ret.data;
-		PF_Pixel16* wData = (PF_Pixel16 *)world->data;
+		PF_FpShort* mData = (PF_FpShort*)ret.data;
+		PF_Pixel32* wData = (PF_Pixel32 *)world->data;
 
 
 		A_long matPos = 0;
@@ -180,10 +204,10 @@ public:
 			{
 				A_long matPosx = matPos + x * cz;
 				A_long wldPosx = wldPos + x;
-				mData[matPosx + 0] = wData[wldPosx].blue;
-				mData[matPosx + 1] = wData[wldPosx].green;
-				mData[matPosx + 2] = wData[wldPosx].red;
-				mData[matPosx + 3] = wData[wldPosx].alpha;
+				mData[matPosx + BLUE] = wData[wldPosx].blue;
+				mData[matPosx + GREEN] = wData[wldPosx].green;
+				mData[matPosx + RED] = wData[wldPosx].red;
+				mData[matPosx + ALPHA] = wData[wldPosx].alpha;
 
 			}
 			matPos += czw;
@@ -221,10 +245,10 @@ public:
 			{
 				A_long matPosx = matPos + x * cz;
 				A_long wldPosx = wldPos + x;
-				wData[wldPosx].blue = mData[matPosx + 0];
-				wData[wldPosx].green = mData[matPosx + 1];
-				wData[wldPosx].red = mData[matPosx + 2];
-				wData[wldPosx].alpha = mData[matPosx + 3];
+				wData[wldPosx].blue = mData[matPosx + BLUE];
+				wData[wldPosx].green = mData[matPosx + GREEN];
+				wData[wldPosx].red = mData[matPosx + RED];
+				wData[wldPosx].alpha = mData[matPosx + ALPHA];
 
 			}
 			matPos += czw;
@@ -263,10 +287,10 @@ public:
 			{
 				A_long matPosx = matPos + x * cz;
 				A_long wldPosx = wldPos + x;
-				wData[wldPosx].blue = mData[matPosx + 0];
-				wData[wldPosx].green = mData[matPosx + 1];
-				wData[wldPosx].red = mData[matPosx + 2];
-				wData[wldPosx].alpha = mData[matPosx + 3];
+				wData[wldPosx].blue = mData[matPosx + BLUE];
+				wData[wldPosx].green = mData[matPosx + GREEN];
+				wData[wldPosx].red = mData[matPosx + RED];
+				wData[wldPosx].alpha = mData[matPosx + ALPHA];
 
 			}
 			matPos += czw;
@@ -304,10 +328,10 @@ public:
 			{
 				A_long matPosx = matPos + x * cz;
 				A_long wldPosx = wldPos + x;
-				wData[wldPosx].blue = mData[matPosx + 0];
-				wData[wldPosx].green = mData[matPosx + 1];
-				wData[wldPosx].red = mData[matPosx + 2];
-				wData[wldPosx].alpha = mData[matPosx + 3];
+				wData[wldPosx].blue = mData[matPosx + BLUE];
+				wData[wldPosx].green = mData[matPosx + GREEN];
+				wData[wldPosx].red = mData[matPosx + RED];
+				wData[wldPosx].alpha = mData[matPosx + ALPHA];
 
 			}
 			matPos += czw;
@@ -380,7 +404,7 @@ public:
 	}
 	//*********************************************************************************
 	static PF_Err iterate8( refconType refcon, cv::Mat src, cv::Mat dst,
-		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, A_u_char *in, A_u_char *out)
+		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, CV8UC4_Pixel *in, CV8UC4_Pixel *out)
 	)
 	{
 		PF_Err err = PF_Err_NONE;
@@ -388,21 +412,21 @@ public:
 		A_long w = src.cols;
 		A_long h = src.rows;
 
-		A_u_char* inD = (A_u_char*)src.data;
-		A_u_char* outD = (A_u_char*)dst.data;
+		CV8UC4_Pixel* inD = (CV8UC4_Pixel*)src.data;
+		CV8UC4_Pixel* outD = (CV8UC4_Pixel*)dst.data;
 		for (A_long y = 0; y < h; y++) {
 			for (A_long x = 0; x < w; x++) {
 				err = pix_fn((refconType)refcon, x, y, inD, outD);
 				if (err != PF_Err_NONE) return err;
-				inD+=4;
-				outD+=4;
+				inD++;
+				outD++;
 			}
 		}
 		return err;
 	}
 	//*********************************************************************************
 	static PF_Err iterate16(refconType refcon, cv::Mat src, cv::Mat dst,
-		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, A_u_short *in, A_u_short *out)
+		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, CV16UC4_Pixel *in, CV16UC4_Pixel *out)
 	)
 	{
 		PF_Err err = PF_Err_NONE;
@@ -410,21 +434,21 @@ public:
 		A_long w = src.cols;
 		A_long h = src.rows;
 
-		A_u_short* inD = (A_u_short*)src.data;
-		A_u_short* outD = (A_u_short*)dst.data;
+		CV16UC4_Pixel* inD = (CV16UC4_Pixel*)src.data;
+		CV16UC4_Pixel* outD = (CV16UC4_Pixel*)dst.data;
 		for (A_long y = 0; y < h; y++) {
 			for (A_long x = 0; x < w; x++) {
 				err = pix_fn((refconType)refcon, x, y, inD, outD);
 				if (err != PF_Err_NONE) return err;
-				inD += 4;
-				outD += 4;
+				inD++;
+				outD++;
 			}
 		}
 		return err;
 	}
 	//*********************************************************************************
 	static PF_Err iterate32(refconType refcon, cv::Mat src, cv::Mat dst,
-		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, PF_FpShort *in, PF_FpShort *out)
+		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, CV32UC4_Pixel *in, CV32UC4_Pixel *out)
 	)
 	{
 		PF_Err err;
@@ -432,17 +456,800 @@ public:
 		A_long w = src.cols;
 		A_long h = src.rows;
 
-		PF_FpShort* inD = (PF_FpShort*)src.data;
-		PF_FpShort* outD = (PF_FpShort*)dst.data;
+		CV32UC4_Pixel* inD = (CV32UC4_Pixel*)src.data;
+		CV32UC4_Pixel* outD = (CV32UC4_Pixel*)dst.data;
 		for (A_long y = 0; y < h; y++) {
 			for (A_long x = 0; x < w; x++) {
 				err = pix_fn((refconType)refcon, x, y, inD, outD);
 				if (err != PF_Err_NONE) return err;
-				inD += 4;
-				outD += 4;
+				inD++;
+				outD++;
 			}
 		}
 		return err;
+	}
+	//*********************************************************************************
+	static PF_Err ToPremultiply8(cv::Mat src)
+	{
+		PF_Err err = PF_Err_NONE;
+		A_long w = src.cols;
+		A_long ch = 4;
+		A_long wt = w * ch;
+		A_long h = src.rows;
+		A_u_char* data = (A_u_char*)src.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				double a = (double)data[xypos + 3] / PF_MAX_CHAN8; // alpah
+				data[xypos + BLUE] = RoundByteFpLong(data[xypos + BLUE] * a); //blue
+				data[xypos + GREEN] = RoundByteFpLong(data[xypos + GREEN] * a); //green
+				data[xypos + RED] = RoundByteFpLong(data[xypos + RED] * a); //red
+				xypos += ch;
+			}
+			ypos += wt;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err ToPremultiply16(cv::Mat src)
+	{
+		PF_Err err = PF_Err_NONE;
+		A_long w = src.cols;
+		A_long ch = 4;
+		A_long wt = w * ch;
+		A_long h = src.rows;
+		A_u_short* data = (A_u_short*)src.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				double a = (double)data[xypos + 3] / PF_MAX_CHAN16; // alpah
+				data[xypos + BLUE] = RoundShortFpLong(data[xypos + 0] * a); //blue
+				data[xypos + GREEN] = RoundShortFpLong(data[xypos + 1] * a); //green
+				data[xypos + RED] = RoundShortFpLong(data[xypos + 2] * a); //red
+
+				xypos += ch;
+			}
+			ypos += wt;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err ToPremultiply32(cv::Mat src)
+	{
+		PF_Err err = PF_Err_NONE;
+		A_long w = src.cols;
+		A_long ch = 4;
+		A_long wt = w * ch;
+		A_long h = src.rows;
+		PF_FpShort* data = (PF_FpShort*)src.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				double a = (double)data[xypos + 3]; // alpah
+				data[xypos + BLUE] = RoundFpShortDouble(data[xypos + 0] * a); //blue
+				data[xypos + GREEN] = RoundFpShortDouble(data[xypos + 1] * a); //green
+				data[xypos + RED] = RoundFpShortDouble(data[xypos + 2] * a); //red
+				xypos += ch;
+			}
+			ypos += wt;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err ToPremultiply(CAE *ae, cv::Mat src)
+	{
+		PF_PixelFormat format = ae->pixelFormat();
+		switch (format)
+		{
+		case PF_PixelFormat_ARGB128:
+			return ToPremultiply32(src);
+			break;
+		case PF_PixelFormat_ARGB64:
+			return ToPremultiply16(src);
+			break;
+		case PF_PixelFormat_ARGB32:
+		default:
+			return ToPremultiply8(src);
+			break;
+		}
+
+	}
+	//*********************************************************************************
+	static PF_Err FromPremultiply8(cv::Mat src)
+	{
+		PF_Err err = PF_Err_NONE;
+		A_long w = src.cols;
+		A_long ch = 4;
+		A_long wt = w * ch;
+		A_long h = src.rows;
+		A_u_char* data = (A_u_char*)src.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				double a =  PF_MAX_CHAN8 / (double)data[xypos + ALPHA] ; // alpah
+				data[xypos + BLUE] = RoundByteFpLong(data[xypos + BLUE] * a); //blue
+				data[xypos + GREEN] = RoundByteFpLong(data[xypos + GREEN] * a); //green
+				data[xypos + RED] = RoundByteFpLong(data[xypos + RED] * a); //red
+				xypos += ch;
+			}
+			ypos += wt;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err FromPremultiply16(cv::Mat src)
+	{
+		PF_Err err = PF_Err_NONE;
+		A_long w = src.cols;
+		A_long ch = 4;
+		A_long wt = w * ch;
+		A_long h = src.rows;
+		A_u_short* data = (A_u_short*)src.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				double a = PF_MAX_CHAN16 / (double)data[xypos + ALPHA]; // alpah
+				data[xypos + BLUE] = RoundShortFpLong(data[xypos + BLUE] * a); //blue
+				data[xypos + GREEN] = RoundShortFpLong(data[xypos + GREEN] * a); //green
+				data[xypos + RED] = RoundShortFpLong(data[xypos + RED] * a); //red
+				xypos += ch;
+			}
+			ypos += wt;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err FromPremultiply32(cv::Mat src)
+	{
+		PF_Err err = PF_Err_NONE;
+		A_long w = src.cols;
+		A_long ch = 4;
+		A_long wt = w * ch;
+		A_long h = src.rows;
+		PF_FpShort* data = (PF_FpShort*)src.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				double a = 1 / (double)data[xypos + ALPHA]; // alpah
+				data[xypos + BLUE] = RoundFpShortDouble(data[xypos + BLUE] * a); //blue
+				data[xypos + GREEN] = RoundFpShortDouble(data[xypos + GREEN] * a); //green
+				data[xypos + RED] = RoundFpShortDouble(data[xypos + RED] * a); //red
+				xypos += ch;
+			}
+			ypos += wt;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err FromPremultiply(CAE *ae, cv::Mat src)
+	{
+		PF_PixelFormat format = ae->pixelFormat();
+		switch (format)
+		{
+		case PF_PixelFormat_ARGB128:
+			return FromPremultiply32(src);
+			break;
+		case PF_PixelFormat_ARGB64:
+			return FromPremultiply16(src);
+			break;
+		case PF_PixelFormat_ARGB32:
+		default:
+			return FromPremultiply8(src);
+			break;
+		}
+	}
+	//*********************************************************************************
+	//ピクセルの通常合成
+	//s に ｄを足す
+	static CV8UC4_Pixel BlendPx8(CV8UC4_Pixel s, CV8UC4_Pixel d)
+	{
+		if (d.alpha <= 0) return s;
+
+		if (s.alpha <= 0) return d;
+		if (s.alpha >= PF_MAX_CHAN8) return s;
+
+		double sa2 = (double)s.alpha / PF_MAX_CHAN8;
+		double sa1 = (1 - sa2);
+
+		CV8UC4_Pixel ret;
+		ret.blue = RoundByteFpLong(d.blue * sa1 + s.blue * sa2);
+		ret.green = RoundByteFpLong(d.green * sa1 + s.green * sa2);
+		ret.red = RoundByteFpLong(d.red * sa1 + s.red * sa2);
+		ret.alpha = RoundByteFpLong(d.alpha + s.alpha * sa2);
+		
+		return ret;
+
+	}
+	//*********************************************************************************
+	//ピクセルの通常合成
+	static CV16UC4_Pixel BlendPx16(CV16UC4_Pixel s, CV16UC4_Pixel d)
+	{
+		if (d.alpha <= 0) return s;
+
+		if (s.alpha <= 0) return d;
+		if (s.alpha >= PF_MAX_CHAN16) return s;
+
+		double sa2 = (double)s.alpha / PF_MAX_CHAN16;
+		double sa1 = (1 - sa2);
+
+		CV16UC4_Pixel ret;
+		ret.blue = RoundShortFpLong(d.blue * sa1 + s.blue * sa2);
+		ret.green = RoundShortFpLong(d.green * sa1 + s.green * sa2);
+		ret.red = RoundShortFpLong(d.red * sa1 + s.red * sa2);
+		ret.alpha = RoundShortFpLong(d.alpha + s.alpha * sa2);
+
+		return ret;
+
+	}
+	//*********************************************************************************
+	//ピクセルの通常合成
+	static CV32UC4_Pixel BlendPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	{
+		if (d.alpha <= 0) return s;
+
+		if (s.alpha <= 0) return d;
+		if (s.alpha >= 1) return s;
+
+		double sa2 = (double)s.alpha;
+		double sa1 = (1 - sa2);
+
+		CV32UC4_Pixel ret;
+		ret.blue = RoundFpShortDouble((double)d.blue * sa1 + (double)s.blue * sa2);
+		ret.green = RoundFpShortDouble((double)d.green * sa1 + (double)s.green * sa2);
+		ret.red = RoundFpShortDouble((double)d.red * sa1 + (double)s.red * sa2);
+		ret.alpha = RoundFpShortDouble((double)d.alpha + (double)s.alpha * sa2);
+
+		return ret;
+
+	}
+	//*********************************************************************************
+	//ピクセルのスクリーン合成
+	static CV8UC4_Pixel ScreenPx8(CV8UC4_Pixel s, CV8UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		/*
+			  1 - (1-s)*(1-d)
+			  1 - ((1-d)-s*(1-d))
+			  1 - (1-d-s*1+s*d)
+			  1 - 1+d+s*1-s*d
+			  d + s - s*d
+		*/
+		CV8UC4_Pixel ret;
+		ret.blue = RoundByteLong((A_long)s.blue + (A_long)d.blue - (A_long)s.blue * (A_long)d.blue/PF_MAX_CHAN8);
+		ret.green = RoundByteLong((A_long)s.green + (A_long)d.green - (A_long)s.green * (A_long)d.green / PF_MAX_CHAN8);
+		ret.red = RoundByteLong((A_long)s.red + (A_long)d.red - (A_long)s.red * (A_long)d.red / PF_MAX_CHAN8);
+		ret.alpha = RoundByteLong((A_long)s.alpha + (A_long)d.alpha - (A_long)s.alpha * (A_long)d.alpha / PF_MAX_CHAN8);
+
+		return ret;
+	}
+	//*********************************************************************************
+	//ピクセルのスクリーン合成
+	static CV16UC4_Pixel ScreenPx16(CV16UC4_Pixel s, CV16UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV16UC4_Pixel ret;
+		ret.blue = RoundShort((A_long)s.blue + (A_long)d.blue - (A_long)s.blue * (A_long)d.blue / PF_MAX_CHAN16);
+		ret.green = RoundShort((A_long)s.green + (A_long)d.green - (A_long)s.green * (A_long)d.green / PF_MAX_CHAN16);
+		ret.red = RoundShort((A_long)s.red + (A_long)d.red - (A_long)s.red * (A_long)d.red / PF_MAX_CHAN16);
+		ret.alpha = RoundShort((A_long)s.alpha + (A_long)d.alpha - (A_long)s.alpha * (A_long)d.alpha / PF_MAX_CHAN16);
+
+		return ret;
+	}
+	//*********************************************************************************
+	//ピクセルのスクリーン合成
+	static CV32UC4_Pixel ScreenPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV32UC4_Pixel ret;
+		ret.blue = RoundFpShortDouble((double)s.blue + (double)d.blue - (double)s.blue * (double)d.blue);
+		ret.green = RoundFpShortDouble((double)s.green + (double)d.green - (double)s.green * (double)d.green);
+		ret.red = RoundFpShortDouble((double)s.red + (double)d.red - (double)s.red * (double)d.red);
+		ret.alpha = RoundFpShortDouble((double)s.alpha + (double)d.alpha - (double)s.alpha * (double)d.alpha);
+
+		return ret;
+	}
+	//*********************************************************************************
+	// ピクセルの明るさ（明）合成
+	// Premultiply状態じゃないと結果がおかしくなる
+	static CV8UC4_Pixel LightenPx8(CV8UC4_Pixel s, CV8UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV8UC4_Pixel ret;
+		ret.blue = s.blue > d.blue ? s.blue : d.blue;
+		ret.green = s.green > d.green ? s.green : d.green;
+		ret.red = s.red > d.red ? s.red : d.red;
+		ret.alpha = s.alpha > d.alpha ? s.alpha : d.alpha;
+		return ret;
+	}
+	//*********************************************************************************
+	// ピクセルの明るさ（明）合成
+	// Premultiply状態じゃないと結果がおかしくなる
+	static CV16UC4_Pixel LightenPx16(CV16UC4_Pixel s, CV16UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV16UC4_Pixel ret;
+		ret.blue = s.blue > d.blue ? s.blue : d.blue;
+		ret.green = s.green > d.green ? s.green : d.green;
+		ret.red = s.red > d.red ? s.red : d.red;
+		ret.alpha = s.alpha > d.alpha ? s.alpha : d.alpha;
+		return ret;
+	}
+	//*********************************************************************************
+	// ピクセルの明るさ（明）合成
+	// Premultiply状態じゃないと結果がおかしくなる
+	static CV32UC4_Pixel LightenPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV32UC4_Pixel ret;
+		ret.blue = s.blue > d.blue ? s.blue : d.blue;
+		ret.green = s.green > d.green ? s.green : d.green;
+		ret.red = s.red > d.red ? s.red : d.red;
+		ret.alpha = s.alpha > d.alpha ? s.alpha : d.alpha;
+		return ret;
+	}
+	//*********************************************************************************
+	//ピクセルの加算合成
+	static CV8UC4_Pixel AddPx8(CV8UC4_Pixel s, CV8UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV8UC4_Pixel ret;
+		ret.blue = RoundByteLong((A_long)s.blue + (A_long)d.blue);
+		ret.green = RoundByteLong((A_long)s.green + (A_long)d.green);
+		ret.red = RoundByteLong((A_long)s.red + (A_long)d.red);
+		ret.alpha = RoundByteLong((A_long)s.alpha + (A_long)d.alpha);
+		return ret;
+	}
+	//*********************************************************************************
+	//ピクセルの加算合成
+	static CV16UC4_Pixel AddPx16(CV16UC4_Pixel s, CV16UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV16UC4_Pixel ret;
+		ret.blue = RoundShort((A_long)s.blue + (A_long)d.blue);
+		ret.green = RoundShort((A_long)s.green + (A_long)d.green);
+		ret.red = RoundShort((A_long)s.red + (A_long)d.red);
+		ret.alpha = RoundShort((A_long)s.alpha + (A_long)d.alpha);
+		return ret;
+	}
+	//*********************************************************************************
+	//ピクセルの加算合成
+	static CV32UC4_Pixel AddPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	{
+		if (s.alpha <= 0) return d;
+		if (d.alpha <= 0) return s;
+
+		CV32UC4_Pixel ret;
+		ret.blue = RoundFpShort2((double)s.blue + (double)d.blue);
+		ret.green = RoundFpShort2((double)s.green + (double)d.green);
+		ret.red = RoundFpShort2((double)s.red + (double)d.red);
+		ret.alpha = RoundFpShort2((double)s.alpha + (double)d.alpha);
+		return ret;
+	}
+	//*********************************************************************************
+	static CV8UC4_Pixel Blend8(CV8UC4_Pixel s, CV8UC4_Pixel d, PF_FpLong par/*0..1 max*/)
+	{
+		CV8UC4_Pixel ret;
+		PF_FpLong par2 = 1 - par;
+		
+		ret.red = RoundByteDouble((double)d.red * par2 + (double)s.red * par);
+		ret.green = RoundByteDouble((double)d.green * par2 + (double)s.green * par);
+		ret.blue = RoundByteDouble((double)d.blue * par2 + (double)s.blue * par);
+		ret.alpha = RoundByteDouble((double)d.alpha * par2 + (double)s.alpha * par);
+
+		return ret;
+	}
+	//*********************************************************************************
+	static CV16UC4_Pixel Blend16(CV16UC4_Pixel s, CV16UC4_Pixel d, PF_FpLong par/*0..1 max*/)
+	{
+		CV16UC4_Pixel ret;
+		PF_FpLong par2 = 1 - par;
+
+		ret.red = RoundShortFpLong((double)d.red * par2 + (double)s.red * par);
+		ret.green = RoundShortFpLong((double)d.green * par2 + (double)s.green * par);
+		ret.blue = RoundShortFpLong((double)d.blue * par2 + (double)s.blue * par);
+		ret.alpha = RoundShortFpLong((double)d.alpha * par2 + (double)s.alpha * par);
+
+		return ret;
+	}
+	//*********************************************************************************
+	static CV32UC4_Pixel Blend32(CV32UC4_Pixel s, CV32UC4_Pixel d, PF_FpLong par/*0..1 max*/)
+	{
+		CV32UC4_Pixel ret;
+		double par2 = 1 - par;
+
+		ret.red = RoundFpShort2((double)d.red * par2 + (double)s.red * par);
+		ret.green = RoundFpShort2((double)d.green * par2 + (double)s.green * par);
+		ret.blue = RoundFpShort2((double)d.blue * par2 + (double)s.blue * par);
+		ret.alpha = RoundFpShort2((double)d.alpha * par2 + (double)s.alpha * par);
+
+		return ret;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendNormal8(cv::Mat src, cv::Mat dst,PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV8UC4_Pixel* srcD = (CV8UC4_Pixel*)src.data;
+		CV8UC4_Pixel* dstD = (CV8UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV8UC4_Pixel a = BlendPx8(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend8(a, dstD[xypos],par);
+				xypos++;
+			}
+			ypos+=w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendNormal16(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV16UC4_Pixel* srcD = (CV16UC4_Pixel*)src.data;
+		CV16UC4_Pixel* dstD = (CV16UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV16UC4_Pixel a = BlendPx16(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend16(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendNormal32(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
+		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV32UC4_Pixel a = BlendPx32(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend32(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err BlendNormal(CAE *ae, cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_PixelFormat format = ae->pixelFormat();
+		switch (format)
+		{
+		case PF_PixelFormat_ARGB128:
+			return BlendNormal32(src,dst,par);
+			break;
+		case PF_PixelFormat_ARGB64:
+			return BlendNormal16(src, dst, par);
+			break;
+		case PF_PixelFormat_ARGB32:
+		default:
+			return BlendNormal8(src, dst, par);
+			break;
+		}
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendScreen8(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV8UC4_Pixel* srcD = (CV8UC4_Pixel*)src.data;
+		CV8UC4_Pixel* dstD = (CV8UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV8UC4_Pixel a = ScreenPx8(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend8(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendScreen16(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV16UC4_Pixel* srcD = (CV16UC4_Pixel*)src.data;
+		CV16UC4_Pixel* dstD = (CV16UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV16UC4_Pixel a = ScreenPx16(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend16(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendScreen32(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
+		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV32UC4_Pixel a = ScreenPx32(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend32(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err BlendScreen(CAE *ae, cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_PixelFormat format = ae->pixelFormat();
+		switch (format)
+		{
+		case PF_PixelFormat_ARGB128:
+			return BlendScreen32(src, dst, par);
+			break;
+		case PF_PixelFormat_ARGB64:
+			return BlendScreen16(src, dst, par);
+			break;
+		case PF_PixelFormat_ARGB32:
+		default:
+			return BlendScreen8(src, dst, par);
+			break;
+		}
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendLighten8(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV8UC4_Pixel* srcD = (CV8UC4_Pixel*)src.data;
+		CV8UC4_Pixel* dstD = (CV8UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV8UC4_Pixel a = LightenPx8(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend8(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendLighten16(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV16UC4_Pixel* srcD = (CV16UC4_Pixel*)src.data;
+		CV16UC4_Pixel* dstD = (CV16UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV16UC4_Pixel a = LightenPx16(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend16(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendLighten32(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
+		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV32UC4_Pixel a = LightenPx32(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend32(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err BlendLighten(CAE *ae, cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_PixelFormat format = ae->pixelFormat();
+		switch (format)
+		{
+		case PF_PixelFormat_ARGB128:
+			return BlendLighten32(src, dst, par);
+			break;
+		case PF_PixelFormat_ARGB64:
+			return BlendLighten16(src, dst, par);
+			break;
+		case PF_PixelFormat_ARGB32:
+		default:
+			return BlendLighten8(src, dst, par);
+			break;
+		}
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendAdd8(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV8UC4_Pixel* srcD = (CV8UC4_Pixel*)src.data;
+		CV8UC4_Pixel* dstD = (CV8UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV8UC4_Pixel a = AddPx8(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend8(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendAdd16(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV16UC4_Pixel* srcD = (CV16UC4_Pixel*)src.data;
+		CV16UC4_Pixel* dstD = (CV16UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV16UC4_Pixel a = AddPx16(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend16(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	// srcをdstに合成
+	static PF_Err BlendAdd32(cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_Err err = PF_Err_NONE;
+		if (par <= 0) return err;
+
+		A_long w = src.cols;
+		A_long h = src.rows;
+		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
+		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+
+		A_long ypos = 0;
+		for (A_long y = 0; y < h; y++) {
+			A_long xypos = ypos;
+			for (A_long x = 0; x < w; x++) {
+				CV32UC4_Pixel a = AddPx32(srcD[xypos], dstD[xypos]);
+				dstD[xypos] = Blend32(a, dstD[xypos], par);
+				xypos++;
+			}
+			ypos += w;
+		}
+		return err;
+	}
+	//*********************************************************************************
+	static PF_Err BlendAdd(CAE *ae, cv::Mat src, cv::Mat dst, PF_FpLong par/*0..1 max*/)
+	{
+		PF_PixelFormat format = ae->pixelFormat();
+		switch (format)
+		{
+		case PF_PixelFormat_ARGB128:
+			return BlendAdd32(src, dst, par);
+			break;
+		case PF_PixelFormat_ARGB64:
+			return BlendAdd16(src, dst, par);
+			break;
+		case PF_PixelFormat_ARGB32:
+		default:
+			return BlendAdd8(src, dst, par);
+			break;
+		}
 	}
 };
 

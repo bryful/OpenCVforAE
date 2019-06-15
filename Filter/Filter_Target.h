@@ -1,5 +1,5 @@
 /*
-	OpenCVSkelton
+	Filter
 
 	各種定数を設定
 
@@ -9,16 +9,15 @@
 
 
 #pragma once
-#ifndef OpenCVSkelton_Target_H
-#define OpenCVSkelton_Target_H
+#ifndef Filter_Target_H
+#define Filter_Target_H
 
 
-#define DESCRIPTION		"OpenCVSkelton Effect Filter"
+#define DESCRIPTION		"簡単なフィルター"
 
-#define NAME			"OpenCVSkelton"
+#define NAME			"Filter"
 #define MATCH_NAME		NAME
 #define CATEGORY		"OpenCV"
-
 
 #define SUPPORT_SMARTFX			//これを有効にするとSmartFX+Float_Colorに対応する
 
@@ -34,11 +33,11 @@
 //value:4 [PF_OutFlag_NON_PARAM_VARY] 全フレームで描画
 //value:64 [PF_OutFlag_USE_OUTPUT_EXTENT] 表示画面全部
 //value:33554432[PF_OutFlag_DEEP_COLOR_AWARE] 16bit
-//#define AE_OUT_FLAGS	33554500	//こっちにすると全フレーム描画する
+#define AE_OUT_FLAGS	33554500	//こっちにすると全フレーム描画する
 
 //value:64 [PF_OutFlag_USE_OUTPUT_EXTENT] 表示画面全部
 //value:33554432[PF_OutFlag_DEEP_COLOR_AWARE] 16bit
-#define AE_OUT_FLAGS	33554496
+//#define AE_OUT_FLAGS	33554496
 
 
 
@@ -53,5 +52,6 @@
 #define AE_OUT_FLAGS2	8
 #endif
 
-#endif // OpenCVSkelton_Target_H
+
+#endif // Filter_Target_H
 
