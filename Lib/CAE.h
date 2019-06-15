@@ -66,7 +66,7 @@ typedef struct {
 
 
 #define AE_ITEM_COUNT	256
-
+#define AE_WORLD_COUNT	4
 //******************************************************************************
 class CAE{
 private:
@@ -76,6 +76,9 @@ protected:
 	A_long				m_paramsCount;
 	PF_Err				m_resultErr;
 	PF_Boolean			m_isGetEffectStream;
+	A_long				m_frame;
+	PF_EffectWorld		m_worlds[AE_WORLD_COUNT];
+	A_long				m_worldsCount;
 
 public:
 	//--------------------------------------------------------------------
@@ -96,6 +99,8 @@ public:
 	ae_global_dataP		ae_plugin_idP;
 	AEGP_StreamRefH		ae_item_streamH[AE_ITEM_COUNT];
 	AEGP_EffectRefH		ae_effect_refH;
+	PF_EffectWorld*		m_worldsP[AE_WORLD_COUNT];
+
 	//*********************************************************************************
 	//*********************************************************************************
 	void Init()
@@ -105,6 +110,8 @@ public:
 		m_paramsCount		= 0;
 		m_isGetEffectStream	= FALSE;
 		m_resultErr			= PF_Err_NONE;
+		m_frame				= 0;
+		m_worldsCount		= 0;
 
 		CAE::in_data		= NULL;
 		CAE::out_data		= NULL;
@@ -121,6 +128,8 @@ public:
 
 		CAE::ae_effect_refH	= NULL;
 		for (A_long i=0; i<AE_ITEM_COUNT; i++) CAE::ae_item_streamH[i]=NULL;
+		for (A_long i = 0; i < AE_WORLD_COUNT; i++) CAE::m_worldsP[i] = NULL;
+
 
 	}
 	//*********************************************************************************
@@ -163,7 +172,10 @@ public:
 		}else{
 			m_format		= PF_PixelFormat_ARGB32;
 		}
-
+		//カレントフレームを求める画頭は０
+		if ((in_dataP->current_time >= 0) && (in_dataP->time_step > 0)) {
+			m_frame = (in_dataP->current_time / in_dataP->time_step);
+		}
 		CAE::in_data		= in_dataP;
 		CAE::out_data		= out_dataP;
 		
@@ -181,7 +193,6 @@ public:
 			ae_plugin_idH	= in_dataP->global_data;
 			ae_plugin_idP = reinterpret_cast<ae_global_dataP>(DH(in_dataP->global_data));
 		}
-		
 		m_resultErr		= err;
 
 		m_mode			= AE_RENDER;
@@ -220,7 +231,12 @@ public:
 		CAE::out_data		= out_dataP;
 		CAE::PRextraP		= extraP;
 		m_paramsCount		= paramsCount;
-		
+
+		//カレントフレームを求める画頭は０
+		if ((in_dataP->current_time >= 0) && (in_dataP->time_step > 0)) {
+			m_frame = (in_dataP->current_time / in_dataP->time_step);
+		}
+
 		m_mode			= AE_SMART_PR_ERENDER;
 		CAE::suitesP	= new AEGP_SuiteHandler(in_dataP->pica_basicP);
 		if ( infoSize>0){
@@ -267,6 +283,12 @@ public:
 			m_resultErr = AE_ERR;
 			return m_resultErr;
 		}
+
+		//カレントフレームを求める画頭は０
+		if ((in_dataP->current_time >= 0) && (in_dataP->time_step > 0)) {
+			m_frame = (in_dataP->current_time / in_dataP->time_step);
+		}
+
 		CAE::in_data		= in_dataP;
 		CAE::out_data		= out_dataP;
 		CAE::SRextraP		= extraP;
@@ -314,6 +336,10 @@ public:
 		if (in_data->global_data){
 			ae_plugin_idH	= in_data->global_data;
 			ae_plugin_idP = reinterpret_cast<ae_global_dataP>(DH(in_data->global_data));
+		}
+		//カレントフレームを求める画頭は０
+		if ((in_data->current_time >= 0) && (in_data->time_step > 0)) {
+			m_frame = (in_data->current_time / in_data->time_step);
 		}
 		/*
 		if (ae_plugin_idP!=NULL){
@@ -423,6 +449,10 @@ public:
 			}
 			CAE::output		= outputP;
 		}
+		//カレントフレームを求める画頭は０
+		if ((in_dataP->current_time >= 0) && (in_dataP->time_step > 0)) {
+			m_frame = (in_dataP->current_time / in_dataP->time_step);
+		}
 		if ( paramsP !=NULL){
 			CAE::input		= &paramsP[0]->u.ld;
 			for ( A_long i=0; i<paramsCount; i++) CAE::params[i] = paramsP[i];
@@ -457,7 +487,11 @@ public:
 			m_resultErr = AE_ERR;
 			return m_resultErr;
 		}
-		
+		//カレントフレームを求める画頭は０
+		if ((in_dataP->current_time >= 0) && (in_dataP->time_step > 0)) {
+			m_frame = (in_dataP->current_time / in_dataP->time_step);
+		}
+
 		m_paramsCount		= paramsCount;
 
 		CAE::in_data		= in_dataP;
@@ -511,6 +545,21 @@ public:
 									kPFWorldSuite, 
 									kPFWorldSuiteVersion2, 
 									"Couldn't release suite."));
+		}
+		if (m_worldsCount > 0)
+		{
+			for (A_long i = 0; i < m_worldsCount; i++)
+			{
+				if (m_worldsP[i] != NULL) {
+					if (m_mode == AE_SMART_RENDER) {
+						ERR(CAE::ws2P->PF_DisposeWorld(in_data->effect_ref, m_worldsP[i]));
+					}
+					else {
+						ERR((*in_data->utils->dispose_world)(in_data->effect_ref, m_worldsP[i]));
+					}
+					m_worldsP[i] = NULL;
+				}
+			}
 		}
 	}
 	//*********************************************************************************
@@ -1370,5 +1419,58 @@ public:
 
 	}
 	//--------------------------------------------------------------------
+	//*********************************************************************************
+
+	PF_EffectWorld* NewWorld(A_long w, A_long h, PF_PixelFormat format)
+	{
+		PF_EffectWorld *ret = NULL;
+		if (m_worldsCount >= AE_WORLD_COUNT) return ret;
+		AEFX_CLR_STRUCT(m_worlds[m_worldsCount]);
+
+		PF_Boolean ok = FALSE;
+		if (m_mode == AE_SMART_RENDER) {
+			ok = (CAE::ws2P->PF_NewWorld(in_data->effect_ref, output->width, output->height, TRUE, m_format, &m_worlds[m_worldsCount])==PF_Err_NONE);
+		}
+		else {
+			PF_NewWorldFlags f = PF_NewWorldFlag_CLEAR_PIXELS | PF_NewWorldFlag_NONE;
+			if (m_format == PF_PixelFormat_ARGB64)
+				f = PF_NewWorldFlag_CLEAR_PIXELS | PF_NewWorldFlag_DEEP_PIXELS;
+
+			ok = ((*in_data->utils->new_world)(in_data->effect_ref, output->width, output->height, f, &m_worlds[m_worldsCount]) == PF_Err_NONE);
+		}
+		if(ok==TRUE)
+		{
+			ret = &m_worlds[m_worldsCount];
+			m_worldsP[m_worldsCount] = ret;
+			//リザーブにインデックスを記憶
+			m_worlds[m_worldsCount].reserved_long1 = m_worldsCount;
+			m_worldsCount++;
+		}
+		return ret;
+	}
+	//--------------------------------------------------------------------
+	PF_EffectWorld* NewWorld()
+	{
+		return NewWorld(output->width, output->height, m_format);
+	}
+	//--------------------------------------------------------------------
+	PF_Err DisposeWorld(PF_EffectWorld* world)
+	{
+		PF_Err err = PF_Err_NONE;
+		//リザーブからインデックスを獲得
+		int idx = world->reserved_long1;
+		if ((idx < 0) || (idx >= AE_WORLD_COUNT)) return PF_Err_INVALID_INDEX;
+		if (m_worldsP[idx] != NULL) {
+			if (m_mode == AE_SMART_RENDER) {
+				ERR(CAE::ws2P->PF_DisposeWorld(in_data->effect_ref, m_worldsP[idx]));
+			}
+			else {
+				ERR((*in_data->utils->dispose_world)(in_data->effect_ref, m_worldsP[idx]));
+			}
+			m_worldsP[idx] = NULL;
+		}
+		return err;
+	}
 };
+
 #endif
