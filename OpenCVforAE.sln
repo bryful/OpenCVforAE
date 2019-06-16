@@ -6,6 +6,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCVSkelton", "OpenCVSkel
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Filter", "Filter\Win\Filter.vcxproj", "{890A4E7C-19A1-480D-96E0-A25F475F6FC5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RotScale", "RotScale\Win\RotScale.vcxproj", "{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -36,6 +38,16 @@ Global
 		{890A4E7C-19A1-480D-96E0-A25F475F6FC5}.Release-MD|x64.Build.0 = Release|x64
 		{890A4E7C-19A1-480D-96E0-A25F475F6FC5}.Release-MD|x86.ActiveCfg = Release|x64
 		{890A4E7C-19A1-480D-96E0-A25F475F6FC5}.Release-MD|x86.Build.0 = Release|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Debug|x64.ActiveCfg = Debug|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Debug|x64.Build.0 = Debug|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Debug|x86.ActiveCfg = Debug|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release|x64.ActiveCfg = Release|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release|x64.Build.0 = Release|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release|x86.ActiveCfg = Release|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release-MD|x64.ActiveCfg = Release|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release-MD|x64.Build.0 = Release|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release-MD|x86.ActiveCfg = Release|x64
+		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release-MD|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
