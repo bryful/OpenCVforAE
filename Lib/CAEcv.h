@@ -45,18 +45,27 @@ enum
 
 };
 typedef struct {
-	A_u_char	blue,  green, red, alpha;
+	A_u_char	blue, green, red,alpha;
 } CV8UC4_Pixel;
 
 typedef struct {
-	A_u_short	blue, green, red, alpha;
+	A_u_short	blue, green, red,alpha;
 } CV16UC4_Pixel;
 
 typedef struct {
-	PF_FpShort	blue, green, red, alpha;
+	PF_FpShort	blue, green, red,alpha;
 } CV32UC4_Pixel;
 
+/*
+typedef struct {
+		A_u_char	alpha, red, green, blue;
+	} PF_Pixel;
+#define PF_PixLong_ALPHA(pl)			((A_u_char)(0xff & ((pl) >> 24)))
+#define PF_PixLong_RED(pl)				((A_u_char)(0xff & ((pl) >> 16)))
+#define PF_PixLong_GREEN(pl)			((A_u_char)(0xff & ((pl) >> 8)))
+#define PF_PixLong_BLUE(pl)				((A_u_char)(0xff & (pl)))
 
+*/
 class CAEcv
 {
 private:
