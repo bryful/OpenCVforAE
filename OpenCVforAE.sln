@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Filter", "Filter\Win\Filter
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RotScale", "RotScale\Win\RotScale.vcxproj", "{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Resizer", "..\Effect\Resizer\Win\Resizer.vcxproj", "{7A64359A-94E0-4CFC-921A-A1E50930C44E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +50,18 @@ Global
 		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release-MD|x64.Build.0 = Release|x64
 		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release-MD|x86.ActiveCfg = Release|x64
 		{D7DA5E72-41EB-4EFA-9F37-65ED1EA95AFD}.Release-MD|x86.Build.0 = Release|x64
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Debug|x64.ActiveCfg = Debug|x64
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Debug|x64.Build.0 = Debug|x64
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Debug|x86.ActiveCfg = Debug|Win32
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Debug|x86.Build.0 = Debug|Win32
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release|x64.ActiveCfg = Release|x64
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release|x64.Build.0 = Release|x64
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release|x86.ActiveCfg = Release|Win32
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release|x86.Build.0 = Release|Win32
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release-MD|x64.ActiveCfg = Release|x64
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release-MD|x64.Build.0 = Release|x64
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release-MD|x86.ActiveCfg = Release|Win32
+		{7A64359A-94E0-4CFC-921A-A1E50930C44E}.Release-MD|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

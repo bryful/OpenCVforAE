@@ -190,6 +190,54 @@ out_data->num_params = ID_NUM_PARAMS;
 
 return err;
 }
+//=======================================================================================
+static
+PF_Err
+FrameSetup(
+	PF_InData		*in_data,
+	PF_OutData		*out_data,
+	PF_ParamDef		*params[],
+	PF_LayerDef		*output)
+{
+	
+	PF_FpLong border_x = 100;
+	PF_FpLong border_y = 100;
+	out_data->width = 2 * static_cast<A_long>(border_x) + params[0]->u.ld.width;
+	out_data->height = 2 * static_cast<A_long>(border_y) + params[0]->u.ld.height;
+	out_data->origin.h = static_cast<A_short>(border_x);
+	out_data->origin.v = static_cast<A_short>(border_y);
+
+
+	//return PF_Err_NONE;
+	/*
+	PF_FpLong		border_x = 0,
+		border_y = 0,
+		border = params[RESIZE_AMOUNT]->u.sd.value;
+
+	if (params[RESIZE_DOWNSAMPLE]->u.bd.value) {
+		// shrink the border to accomodate decreased resolutions.
+
+		border_x = border * (static_cast<PF_FpLong>(in_data->downsample_x.num) / in_data->downsample_x.den);
+		border_y = border * (static_cast<PF_FpLong>(in_data->downsample_y.num) / in_data->downsample_y.den);
+	}
+	else {
+		border_x = border_y = border;
+	}
+
+	// add 2 times the border width and height to the input width and
+	// height to get the output size.
+
+	out_data->width = 2 * static_cast<A_long>(border_x) + params[0]->u.ld.width;
+	out_data->height = 2 * static_cast<A_long>(border_y) + params[0]->u.ld.height;
+
+	// The origin of the input buffer corresponds to the (border_x, 
+	// border_y) pixel in the output buffer.
+
+	out_data->origin.h = static_cast<A_short>(border_x);
+	out_data->origin.v = static_cast<A_short>(border_y);
+	*/
+	return PF_Err_NONE;
+}
 
 //=======================================================================================
 /*
@@ -336,7 +384,7 @@ PF_Err TestPixelFunc8(CAE *ae, ParamInfo *infoP)
 {
 	PF_Err			err = PF_Err_NONE;
 
-	cv::Mat src = CAEcv::WorldToMat8(ae->output);
+	cv::Mat src = CAEcv::WorldToMat8(ae->output,100,100);
 
 
 	ERR(CAEcv::iterate8((refconType)infoP,src,src, PixelFunc8));
@@ -379,12 +427,32 @@ PF_Err Test8(CAE *ae, ParamInfo *infoP)
 {
 	PF_Err			err = PF_Err_NONE;
 
-	cv::Mat src = CAEcv::WorldToMat8(ae->input);
+	cv::Mat src = CAEcv::WorldToMat8(ae->input,100,100);
 
-	cv::Point pnt(infoP->str_point.x >> 16, infoP->str_point.y >> 16);
+	cv::Point pnt((infoP->str_point.x >> 16) +100, (infoP->str_point.y >> 16) + 100);
 
 	cv::Scalar p = CAEcv::PF_PixelTo(infoP->str_color);
-	cv::putText(src, "After Effects", pnt ,cv::FONT_HERSHEY_TRIPLEX, infoP->str_size,p , (int)(2 * infoP->str_size), CV_AA);
+	char s[255] = "\0";
+
+
+	sprintf_s(s,
+		"iw:%d,ih:%d  (%d,%d - %d,%d) / ow:%d,oh:%d ox:%d oy:%d (%d,%d - %d,%d)",
+		ae->input->width,
+		ae->input->height,
+		ae->input->extent_hint.left,
+		ae->input->extent_hint.top,
+		ae->input->extent_hint.right,
+		ae->input->extent_hint.bottom,
+		ae->output->width,
+		ae->output->height,
+		ae->in_data->output_origin_x,
+		ae->in_data->output_origin_y,
+		ae->output->extent_hint.left,
+		ae->output->extent_hint.top,
+		ae->output->extent_hint.right,
+		ae->output->extent_hint.bottom
+		);
+	cv::putText(src, s, pnt ,cv::FONT_HERSHEY_TRIPLEX, infoP->str_size,p , (int)(2 * infoP->str_size), CV_AA);
 
 	CAEcv::Mat2World8(src,ae->output);
 

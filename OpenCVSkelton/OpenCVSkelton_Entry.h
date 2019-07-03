@@ -244,6 +244,7 @@ PF_Err PluginDataEntryFunction(
 
 	return result;
 }
+
 //=======================================================================================
 PF_Err
 EffectMain(
@@ -308,6 +309,9 @@ EffectMain(
 				out_data,
 				params,
 				reinterpret_cast<PF_UserChangedParamExtra*>(extraP));
+			break;
+		case PF_Cmd_FRAME_SETUP:
+			err = FrameSetup(in_dataP, out_data, params, output);
 			break;
 		}
 	}

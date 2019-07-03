@@ -20,7 +20,7 @@
 #define CATEGORY		"OpenCV"
 
 
-#define SUPPORT_SMARTFX			//‚±‚ê‚ð—LŒø‚É‚·‚é‚ÆSmartFX+Float_Color‚É‘Î‰ž‚·‚é
+//#define SUPPORT_SMARTFX			//‚±‚ê‚ð—LŒø‚É‚·‚é‚ÆSmartFX+Float_Color‚É‘Î‰ž‚·‚é
 
 #define MAJOR_VERSION	1
 #define MINOR_VERSION	0

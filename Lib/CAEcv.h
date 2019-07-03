@@ -119,37 +119,52 @@ public:
 		}
 
 	}
-	static cv::Mat WorldToMat8(PF_EffectWorldPtr world)
+	static cv::Mat WorldToMat8(PF_EffectWorldPtr world,A_long addX=0, A_long addY = 0)
 	{
+		if (addX < 0) addX = 0;
+		if (addY < 0) addY = 0;
 		int w = world->width;
 		int wt = world->rowbytes / sizeof(PF_Pixel);
 		int h = world->height;
+		int mw = w + addX * 2;
+		int mh = h + addY * 2;
 
-		int cz = 4;
-		int czw = cz * w;
 
-		cv::Mat ret(cv::Size((int)world->width, (int)world->height), CV_8UC4);
 
-		A_u_char* mData = (A_u_char*)ret.data;
+		cv::Mat ret(cv::Size((int)mw, (int)mh), CV_8UC4);
+		ret = cv::Scalar(0, 0, 0, 0);
+		CV8UC4_Pixel * mData = (CV8UC4_Pixel *)ret.data;
 		PF_Pixel* wData = (PF_Pixel *)world->data;
 
 
 		A_long matPos = 0;
 		A_long wldPos = 0;
+		/*
+		CV8UC4_Pixel f = { 0,0,0,0 };
+		for (A_long y = 0; y < mh; y++)
+		{
+			for (A_long x = 0; x < mw; x++)
+			{
+				mData[matPos] = f;
+				matPos++;
+			}
+		}
+		*/
+
+		matPos = addX + addY * mw;
 		for (A_long y = 0; y < h; y++)
 		{
-
 			for (A_long x = 0; x < w; x++)
 			{
-				A_long matPosx = matPos + x * cz;
+				A_long matPosx = matPos + x;
 				A_long wldPosx = wldPos + x;
-				mData[matPosx + BLUE] = wData[wldPosx].blue;
-				mData[matPosx + GREEN] = wData[wldPosx].green;
-				mData[matPosx + RED] = wData[wldPosx].red;
-				mData[matPosx + ALPHA] = wData[wldPosx].alpha;
+				mData[matPosx].blue = wData[wldPosx].blue;
+				mData[matPosx].green = wData[wldPosx].green;
+				mData[matPosx].red = wData[wldPosx].red;
+				mData[matPosx].alpha = wData[wldPosx].alpha;
 
 			}
-			matPos += czw;
+			matPos += mw;
 			wldPos += wt;
 		}
 		return ret;

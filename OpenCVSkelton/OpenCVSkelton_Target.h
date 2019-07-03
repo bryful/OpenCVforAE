@@ -20,7 +20,7 @@
 #define CATEGORY		"OpenCV"
 
 
-#define SUPPORT_SMARTFX			//これを有効にするとSmartFX+Float_Colorに対応する
+//#define SUPPORT_SMARTFX			//これを有効にするとSmartFX+Float_Colorに対応する
 
 #define MAJOR_VERSION	1
 #define MINOR_VERSION	0
@@ -34,11 +34,13 @@
 //value:4 [PF_OutFlag_NON_PARAM_VARY] 全フレームで描画
 //value:64 [PF_OutFlag_USE_OUTPUT_EXTENT] 表示画面全部
 //value:33554432[PF_OutFlag_DEEP_COLOR_AWARE] 16bit
-//#define AE_OUT_FLAGS	33554500	//こっちにすると全フレーム描画する
+//value:16777216 [PF_OutFlag_I_HAVE_EXTERNAL_DEPENDENCIES] Used Command: PF_Cmd_GLOBAL_SETUP
+//#define AE_OUT_FLAGS	50332164	//こっちにすると全フレーム描画する
 
 //value:64 [PF_OutFlag_USE_OUTPUT_EXTENT] 表示画面全部
 //value:33554432[PF_OutFlag_DEEP_COLOR_AWARE] 16bit
-#define AE_OUT_FLAGS	33554496
+//value:16777216 [PF_OutFlag_I_HAVE_EXTERNAL_DEPENDENCIES] Used Command: PF_Cmd_GLOBAL_SETUP
+#define AE_OUT_FLAGS	50332160
 
 
 
