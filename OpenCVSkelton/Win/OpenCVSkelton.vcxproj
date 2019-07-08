@@ -208,7 +208,6 @@
     <ClInclude Include="..\..\..\Headers\PrSDKPixelFormat.h" />
     <ClInclude Include="..\OpenCVSkelton_Entry.h" />
     <ClInclude Include="..\OpenCVSkelton_Target.h" />
-    <ClInclude Include="PF_Pixels.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\OpenCVSkeltonPiPL.r">
