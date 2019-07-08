@@ -58,6 +58,8 @@ enum {
 	ID_POPUP,
 	ID_POINT,
 	ID_TOPIC_END,
+	ID_EX_W,
+	ID_EX_H,
 
 	ID_NUM_PARAMS
 };
@@ -86,6 +88,9 @@ enum {
 #define STR_POPUP_DFLT		2
 #define STR_POINT			"point"
 
+#define STR_EX_W			"ex_width"
+#define STR_EX_H			"ex_height"
+
 
 typedef struct ParamInfo {
 	PF_FixedPoint	str_point;
@@ -102,6 +107,8 @@ typedef struct ParamInfo {
 	PF_Fixed		angle;
 	A_long			popup;
 	PF_FixedPoint	point;
+	A_long			ex_w;
+	A_long			ex_h;
 } ParamInfo, *ParamInfoP, **ParamInfoH;
 
 

@@ -54,7 +54,7 @@ typedef struct {
 
 typedef struct {
 	PF_FpShort	blue, green, red,alpha;
-} CV32UC4_Pixel;
+} CV32FC4_Pixel;
 
 /*
 typedef struct {
@@ -169,72 +169,82 @@ public:
 		}
 		return ret;
 	}
-	static cv::Mat WorldToMat16(PF_EffectWorldPtr world)
+	static cv::Mat WorldToMat16(PF_EffectWorldPtr world, A_long addX = 0, A_long addY = 0)
 	{
+		if (addX < 0) addX = 0;
+		if (addY < 0) addY = 0;
 		int w = world->width;
 		int wt = world->rowbytes / sizeof(PF_Pixel16);
 		int h = world->height;
+		int mw = w + addX * 2;
+		int mh = h + addY * 2;
 
-		int cz = 4;
-		int czw = cz * w;
 
-		cv::Mat ret(cv::Size((int)world->width, (int)world->height), CV_16UC4);
 
-		A_u_short* mData = (A_u_short*)ret.data;
+		cv::Mat ret(cv::Size((int)mw, (int)mh), CV_16UC4);
+		ret = cv::Scalar(0, 0, 0, 0);
+		CV16UC4_Pixel * mData = (CV16UC4_Pixel *)ret.data;
 		PF_Pixel16* wData = (PF_Pixel16 *)world->data;
 
 
 		A_long matPos = 0;
 		A_long wldPos = 0;
+
+
+		matPos = addX + addY * mw;
 		for (A_long y = 0; y < h; y++)
 		{
-
 			for (A_long x = 0; x < w; x++)
 			{
-				A_long matPosx = matPos + x * cz;
+				A_long matPosx = matPos + x;
 				A_long wldPosx = wldPos + x;
-				mData[matPosx + BLUE] = wData[wldPosx].blue;
-				mData[matPosx + GREEN] = wData[wldPosx].green;
-				mData[matPosx + RED] = wData[wldPosx].red;
-				mData[matPosx + ALPHA] = wData[wldPosx].alpha;
+				mData[matPosx].blue = wData[wldPosx].blue;
+				mData[matPosx].green = wData[wldPosx].green;
+				mData[matPosx].red = wData[wldPosx].red;
+				mData[matPosx].alpha = wData[wldPosx].alpha;
 
 			}
-			matPos += czw;
+			matPos += mw;
 			wldPos += wt;
 		}
 		return ret;
 	}
-	static cv::Mat WorldToMat32(PF_EffectWorldPtr world)
+	static cv::Mat WorldToMat32(PF_EffectWorldPtr world, A_long addX = 0, A_long addY = 0)
 	{
+		if (addX < 0) addX = 0;
+		if (addY < 0) addY = 0;
 		int w = world->width;
 		int wt = world->rowbytes / sizeof(PF_PixelFloat);
 		int h = world->height;
+		int mw = w + addX * 2;
+		int mh = h + addY * 2;
 
-		int cz = 4;
-		int czw = cz * w;
 
-		cv::Mat ret(cv::Size((int)world->width, (int)world->height), CV_32FC4);
 
-		PF_FpShort* mData = (PF_FpShort*)ret.data;
-		PF_Pixel32* wData = (PF_Pixel32 *)world->data;
+		cv::Mat ret(cv::Size((int)mw, (int)mh), CV_32FC4);
+		ret = cv::Scalar(0, 0, 0, 0);
+		CV32FC4_Pixel * mData = (CV32FC4_Pixel *)ret.data;
+		PF_PixelFloat* wData = (PF_PixelFloat *)world->data;
 
 
 		A_long matPos = 0;
 		A_long wldPos = 0;
+
+
+		matPos = addX + addY * mw;
 		for (A_long y = 0; y < h; y++)
 		{
-
 			for (A_long x = 0; x < w; x++)
 			{
-				A_long matPosx = matPos + x * cz;
+				A_long matPosx = matPos + x;
 				A_long wldPosx = wldPos + x;
-				mData[matPosx + BLUE] = wData[wldPosx].blue;
-				mData[matPosx + GREEN] = wData[wldPosx].green;
-				mData[matPosx + RED] = wData[wldPosx].red;
-				mData[matPosx + ALPHA] = wData[wldPosx].alpha;
+				mData[matPosx].blue = wData[wldPosx].blue;
+				mData[matPosx].green = wData[wldPosx].green;
+				mData[matPosx].red = wData[wldPosx].red;
+				mData[matPosx].alpha = wData[wldPosx].alpha;
 
 			}
-			matPos += czw;
+			matPos += mw;
 			wldPos += wt;
 		}
 		return ret;
@@ -472,7 +482,7 @@ public:
 	}
 	//*********************************************************************************
 	static PF_Err iterate32(refconType refcon, cv::Mat src, cv::Mat dst,
-		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, CV32UC4_Pixel *in, CV32UC4_Pixel *out)
+		PF_Err(*pix_fn)(refconType refcon, A_long x, A_long y, CV32FC4_Pixel *in, CV32FC4_Pixel *out)
 	)
 	{
 		PF_Err err;
@@ -480,8 +490,8 @@ public:
 		A_long w = src.cols;
 		A_long h = src.rows;
 
-		CV32UC4_Pixel* inD = (CV32UC4_Pixel*)src.data;
-		CV32UC4_Pixel* outD = (CV32UC4_Pixel*)dst.data;
+		CV32FC4_Pixel* inD = (CV32FC4_Pixel*)src.data;
+		CV32FC4_Pixel* outD = (CV32FC4_Pixel*)dst.data;
 		for (A_long y = 0; y < h; y++) {
 			for (A_long x = 0; x < w; x++) {
 				err = pix_fn((refconType)refcon, x, y, inD, outD);
@@ -719,7 +729,7 @@ public:
 	}
 	//*********************************************************************************
 	//ピクセルの通常合成
-	static CV32UC4_Pixel BlendPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	static CV32FC4_Pixel BlendPx32(CV32FC4_Pixel s, CV32FC4_Pixel d)
 	{
 		if (d.alpha <= 0) return s;
 
@@ -729,7 +739,7 @@ public:
 		double sa2 = (double)s.alpha;
 		double sa1 = (1 - sa2);
 
-		CV32UC4_Pixel ret;
+		CV32FC4_Pixel ret;
 		ret.blue = RoundFpShortDouble((double)d.blue * sa1 + (double)s.blue * sa2);
 		ret.green = RoundFpShortDouble((double)d.green * sa1 + (double)s.green * sa2);
 		ret.red = RoundFpShortDouble((double)d.red * sa1 + (double)s.red * sa2);
@@ -777,12 +787,12 @@ public:
 	}
 	//*********************************************************************************
 	//ピクセルのスクリーン合成
-	static CV32UC4_Pixel ScreenPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	static CV32FC4_Pixel ScreenPx32(CV32FC4_Pixel s, CV32FC4_Pixel d)
 	{
 		if (s.alpha <= 0) return d;
 		if (d.alpha <= 0) return s;
 
-		CV32UC4_Pixel ret;
+		CV32FC4_Pixel ret;
 		ret.blue = RoundFpShortDouble((double)s.blue + (double)d.blue - (double)s.blue * (double)d.blue);
 		ret.green = RoundFpShortDouble((double)s.green + (double)d.green - (double)s.green * (double)d.green);
 		ret.red = RoundFpShortDouble((double)s.red + (double)d.red - (double)s.red * (double)d.red);
@@ -823,12 +833,12 @@ public:
 	//*********************************************************************************
 	// ピクセルの明るさ（明）合成
 	// Premultiply状態じゃないと結果がおかしくなる
-	static CV32UC4_Pixel LightenPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	static CV32FC4_Pixel LightenPx32(CV32FC4_Pixel s, CV32FC4_Pixel d)
 	{
 		if (s.alpha <= 0) return d;
 		if (d.alpha <= 0) return s;
 
-		CV32UC4_Pixel ret;
+		CV32FC4_Pixel ret;
 		ret.blue = s.blue > d.blue ? s.blue : d.blue;
 		ret.green = s.green > d.green ? s.green : d.green;
 		ret.red = s.red > d.red ? s.red : d.red;
@@ -865,12 +875,12 @@ public:
 	}
 	//*********************************************************************************
 	//ピクセルの加算合成
-	static CV32UC4_Pixel AddPx32(CV32UC4_Pixel s, CV32UC4_Pixel d)
+	static CV32FC4_Pixel AddPx32(CV32FC4_Pixel s, CV32FC4_Pixel d)
 	{
 		if (s.alpha <= 0) return d;
 		if (d.alpha <= 0) return s;
 
-		CV32UC4_Pixel ret;
+		CV32FC4_Pixel ret;
 		ret.blue = RoundFpShort2((double)s.blue + (double)d.blue);
 		ret.green = RoundFpShort2((double)s.green + (double)d.green);
 		ret.red = RoundFpShort2((double)s.red + (double)d.red);
@@ -904,9 +914,9 @@ public:
 		return ret;
 	}
 	//*********************************************************************************
-	static CV32UC4_Pixel Blend32(CV32UC4_Pixel s, CV32UC4_Pixel d, PF_FpLong par/*0..1 max*/)
+	static CV32FC4_Pixel Blend32(CV32FC4_Pixel s, CV32FC4_Pixel d, PF_FpLong par/*0..1 max*/)
 	{
-		CV32UC4_Pixel ret;
+		CV32FC4_Pixel ret;
 		double par2 = 1 - par;
 
 		ret.red = RoundFpShort2((double)d.red * par2 + (double)s.red * par);
@@ -973,14 +983,14 @@ public:
 
 		A_long w = src.cols;
 		A_long h = src.rows;
-		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
-		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+		CV32FC4_Pixel* srcD = (CV32FC4_Pixel*)src.data;
+		CV32FC4_Pixel* dstD = (CV32FC4_Pixel*)dst.data;
 
 		A_long ypos = 0;
 		for (A_long y = 0; y < h; y++) {
 			A_long xypos = ypos;
 			for (A_long x = 0; x < w; x++) {
-				CV32UC4_Pixel a = BlendPx32(srcD[xypos], dstD[xypos]);
+				CV32FC4_Pixel a = BlendPx32(srcD[xypos], dstD[xypos]);
 				dstD[xypos] = Blend32(a, dstD[xypos], par);
 				xypos++;
 			}
@@ -1062,14 +1072,14 @@ public:
 
 		A_long w = src.cols;
 		A_long h = src.rows;
-		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
-		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+		CV32FC4_Pixel* srcD = (CV32FC4_Pixel*)src.data;
+		CV32FC4_Pixel* dstD = (CV32FC4_Pixel*)dst.data;
 
 		A_long ypos = 0;
 		for (A_long y = 0; y < h; y++) {
 			A_long xypos = ypos;
 			for (A_long x = 0; x < w; x++) {
-				CV32UC4_Pixel a = ScreenPx32(srcD[xypos], dstD[xypos]);
+				CV32FC4_Pixel a = ScreenPx32(srcD[xypos], dstD[xypos]);
 				dstD[xypos] = Blend32(a, dstD[xypos], par);
 				xypos++;
 			}
@@ -1152,14 +1162,14 @@ public:
 
 		A_long w = src.cols;
 		A_long h = src.rows;
-		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
-		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+		CV32FC4_Pixel* srcD = (CV32FC4_Pixel*)src.data;
+		CV32FC4_Pixel* dstD = (CV32FC4_Pixel*)dst.data;
 
 		A_long ypos = 0;
 		for (A_long y = 0; y < h; y++) {
 			A_long xypos = ypos;
 			for (A_long x = 0; x < w; x++) {
-				CV32UC4_Pixel a = LightenPx32(srcD[xypos], dstD[xypos]);
+				CV32FC4_Pixel a = LightenPx32(srcD[xypos], dstD[xypos]);
 				dstD[xypos] = Blend32(a, dstD[xypos], par);
 				xypos++;
 			}
@@ -1242,14 +1252,14 @@ public:
 
 		A_long w = src.cols;
 		A_long h = src.rows;
-		CV32UC4_Pixel* srcD = (CV32UC4_Pixel*)src.data;
-		CV32UC4_Pixel* dstD = (CV32UC4_Pixel*)dst.data;
+		CV32FC4_Pixel* srcD = (CV32FC4_Pixel*)src.data;
+		CV32FC4_Pixel* dstD = (CV32FC4_Pixel*)dst.data;
 
 		A_long ypos = 0;
 		for (A_long y = 0; y < h; y++) {
 			A_long xypos = ypos;
 			for (A_long x = 0; x < w; x++) {
-				CV32UC4_Pixel a = AddPx32(srcD[xypos], dstD[xypos]);
+				CV32FC4_Pixel a = AddPx32(srcD[xypos], dstD[xypos]);
 				dstD[xypos] = Blend32(a, dstD[xypos], par);
 				xypos++;
 			}

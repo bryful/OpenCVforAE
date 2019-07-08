@@ -324,17 +324,7 @@ public:
 	//*********************************************************************************
 	//FrameSetup
 	//*********************************************************************************
-	//--------------------------------
-	CAE(
-		PF_InData		*in_data,
-		PF_OutData		*out_data,
-		PF_ParamDef		*params[],
-		PF_LayerDef		*output,
-		A_long			paramsCount
-	)
-	{
-		m_resultErr = FrameSetup(in_data, out_data, params, output,paramsCount);
-	}
+	
 	//*********************************************************************************
 	PF_Err
 		FrameSetup(
@@ -353,7 +343,12 @@ public:
 		}
 		CAE::in_data = in_dataP;
 		CAE::out_data = out_dataP;
-		m_paramsCount = paramsCount;
+
+		if (params != NULL) {
+			CAE::input = &params[0]->u.ld;
+			for (A_long i = 0; i < paramsCount; i++) CAE::params[i] = params[i];
+			m_paramsCount = paramsCount;
+		}
 
 		//カレントフレームを求める画頭は０
 		if ((in_dataP->current_time >= 0) && (in_dataP->time_step > 0)) {
