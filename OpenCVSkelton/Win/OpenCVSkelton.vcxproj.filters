@@ -101,6 +101,9 @@
     <ClInclude Include="..\..\Lib\FsUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PF_Pixels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenCVSkeltonPiPL.rc">

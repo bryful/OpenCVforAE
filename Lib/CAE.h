@@ -48,7 +48,8 @@ enum
 	AE_SMART_RENDER,
 	AE_DO_DIALOG,
 	AE_USER_CHANGED_PARAM,
-	AE_QUERY_DYNAMIC_FLAGS
+	AE_QUERY_DYNAMIC_FLAGS,
+	AE_FRAME_SETUP
 
 };
 
@@ -115,10 +116,10 @@ public:
 
 		CAE::in_data		= NULL;
 		CAE::out_data		= NULL;
-		CAE::input		= NULL;
-		CAE::output		= NULL;
+		CAE::input			= NULL;
+		CAE::output			= NULL;
 
-		CAE::PreRenderH	= NULL;
+		CAE::PreRenderH		= NULL;
 		CAE::PRextraP		= NULL;
 		CAE::SRextraP		= NULL;
 		CAE::ws2P			= NULL;
@@ -321,6 +322,57 @@ public:
 		return err;
 	}
 	//*********************************************************************************
+	//FrameSetup
+	//*********************************************************************************
+	//--------------------------------
+	CAE(
+		PF_InData		*in_data,
+		PF_OutData		*out_data,
+		PF_ParamDef		*params[],
+		PF_LayerDef		*output,
+		A_long			paramsCount
+	)
+	{
+		m_resultErr = FrameSetup(in_data, out_data, params, output,paramsCount);
+	}
+	//*********************************************************************************
+	PF_Err
+		FrameSetup(
+			PF_InData		*in_dataP,
+			PF_OutData		*out_dataP,
+			PF_ParamDef		*params[],
+			PF_LayerDef		*output,
+			A_long			paramsCount
+		)
+	{
+		Init();
+		PF_Err err = PF_Err_NONE;
+		if ((in_dataP == NULL) || (out_dataP == NULL) ) {
+			m_resultErr = AE_ERR;
+			return m_resultErr;
+		}
+		CAE::in_data = in_dataP;
+		CAE::out_data = out_dataP;
+		m_paramsCount = paramsCount;
+
+		//カレントフレームを求める画頭は０
+		if ((in_dataP->current_time >= 0) && (in_dataP->time_step > 0)) {
+			m_frame = (in_dataP->current_time / in_dataP->time_step);
+		}
+
+		m_mode = AE_FRAME_SETUP;
+		CAE::suitesP = new AEGP_SuiteHandler(in_dataP->pica_basicP);
+		
+		if (in_dataP->global_data) {
+			ae_plugin_idH = in_dataP->global_data;
+			ae_plugin_idP = reinterpret_cast<ae_global_dataP>(DH(in_dataP->global_data));
+		}
+
+
+		m_resultErr = err;
+		return err;
+	}
+	//*********************************************************************************
 	//*********************************************************************************
 	//その他の処理
 	//*********************************************************************************
@@ -375,7 +427,7 @@ public:
 		PF_LayerDef		*output)
 	{
 		PF_Err	err				= PF_Err_NONE;
-		CAE::suitesP	= new AEGP_SuiteHandler(in_data->pica_basicP);
+		CAE::suitesP			= new AEGP_SuiteHandler(in_data->pica_basicP);
 
 		//***_Target.hで定義
 		out_data->my_version	=	VERSION;
@@ -790,6 +842,7 @@ public:
 				}
 				break;
 			case AE_RENDER:
+			case AE_FRAME_SETUP:
 			case AE_USER_CHANGED_PARAM:
 				ret = params[idx]->u.sd.value;
 				break;
@@ -828,6 +881,7 @@ public:
 
 				break;
 			case AE_RENDER:
+			case AE_FRAME_SETUP:
 			case AE_USER_CHANGED_PARAM:
 				ret = params[idx]->u.sd.value;
 				break;
@@ -951,6 +1005,7 @@ public:
 					err = PF_Err_BAD_CALLBACK_PARAM;
 				}
 				break;
+			case AE_FRAME_SETUP:
 			case AE_RENDER:
 			case AE_USER_CHANGED_PARAM:
 				ret = (PF_Boolean)params[idx]->u.bd.value;
@@ -989,6 +1044,7 @@ public:
 				}
 
 				break;
+			case AE_FRAME_SETUP:
 			case AE_RENDER:
 			case AE_USER_CHANGED_PARAM:
 				ret = params[idx]->u.cd.value;
@@ -1071,6 +1127,7 @@ public:
 
 				break;
 			case AE_RENDER:
+			case AE_FRAME_SETUP:
 			case AE_USER_CHANGED_PARAM:
 				ret.x = CAE::params[idx]->u.td.x_value;
 				ret.y = CAE::params[idx]->u.td.y_value;
@@ -1109,6 +1166,7 @@ public:
 				}
 				break;
 			case AE_RENDER:
+			case AE_FRAME_SETUP:
 			case AE_USER_CHANGED_PARAM:
 				ret = params[idx]->u.pd.value;
 				break;
