@@ -184,6 +184,7 @@
     <ClInclude Include="..\..\Lib\CAE.h" />
     <ClInclude Include="..\..\Lib\CAEcv.h" />
     <ClInclude Include="..\..\Lib\FsUtils.h" />
+    <ClInclude Include="..\..\Lib\PixelBase.h" />
     <ClInclude Include="..\OpenCVSkelton.h" />
     <ClInclude Include="..\..\..\Headers\A.h" />
     <ClInclude Include="..\..\..\Headers\AE_Effect.h" />

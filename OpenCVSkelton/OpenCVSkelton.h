@@ -35,6 +35,7 @@
 #include "..\Lib\CAE.h"
 #include "..\Lib\CAEcv.h"
 #include "..\Lib\FsUtils.h"
+#include "..\Lib\PixelBase.h"
 
 
 enum {

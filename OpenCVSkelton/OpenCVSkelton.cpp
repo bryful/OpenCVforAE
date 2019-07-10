@@ -610,7 +610,9 @@ Exec(CAE *ae, ParamInfo *infoP)
 
 	//‰æ–Ê‚ðƒRƒs[
 	//ERR(ae->CopyInToOut());
-
+	PF_Pixel c = { 0,0,0,0 };
+	PixelBase pb(c);
+	PF_Pixel16 c16 = pb.ToPx16();
 
 	switch (ae->pixelFormat())
 	{
